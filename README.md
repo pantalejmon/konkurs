@@ -4,5 +4,5 @@ Aby uruchomić serwer lokalnie wymagane jest zainstalowanie i uruchomienie bazy 
 
 w celu uruchomienia serwera należy wpisać
 ```
-npm init && npm run start
+npm install && npm run start
 ```
