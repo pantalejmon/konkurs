@@ -107,8 +107,12 @@ Command.Answer = {
 Command.Help = {
     getFsCallback: function (input, output) {
         var helpContent = "";
-        helpContent += '<div><strong>clear</strong>  [clear]                    | Czysci ekran</div>';
-        helpContent += '<div><strong>answer</strong> [answer {n}] [ls -l]       | Podanie odpowiedzi na pytanie </div>';
+
+        helpContent += '<div><strong>start</strong>  [start]      | Rozpoczęcie testu od ostatniego pytania </div>';
+        helpContent += '<div><strong>reset</strong>  [reset]     | Restart testu </div>';
+        helpContent += '<div><strong>answer</strong> [answer {n}] | Podanie odpowiedzi na pytanie </div>';
+        helpContent += '<div><strong>logout</strong> [logout]     | Wylogowanie się z serwera </div>';
+        helpContent += '<div><strong>clear</strong>  [clear]      | Czysci ekran</div>';
         return output.write(helpContent, input);
     }
 };
@@ -177,11 +181,6 @@ window.onload = function () {
 
 function checkName() {
     let xhr = new XMLHttpRequest();
-
-    //typ połączenia, url, czy połączenie asynchroniczne
-
-
-    //typ połączenia, url, czy połączenie asynchroniczne
     xhr.open("GET", "http://" +
         window.location.host + "/apims/username", null);
     xhr.addEventListener('load', function () {

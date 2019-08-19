@@ -9,6 +9,7 @@ var express_session_1 = __importDefault(require("express-session"));
 var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var router_1 = require("./router");
 var body_parser_1 = __importDefault(require("body-parser"));
+var test_1 = require("../database/test");
 /**
  * Główna klasa serwera
  *
@@ -20,6 +21,7 @@ var Server = /** @class */ (function () {
         this.db = new database_1.DataBase();
         this.startServer();
         this.router = new router_1.Router(this.app, this.db.getUser());
+        this.testController = new test_1.TestController();
         // Error Handlers
         this.app.use(function (req, res, next) {
             res.status(404).send("<h1>Pudło, strona nie istnieje</h1>");

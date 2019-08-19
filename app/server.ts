@@ -4,6 +4,7 @@ import session from "express-session";
 import MongoStore from 'connect-mongo';
 import { Router } from './router';
 import bodyParser from "body-parser"
+import { TestController } from '../database/test';
 
 
 
@@ -17,6 +18,7 @@ export default class Server {
     public db: DataBase;
     public mongoStore: MongoStore.MongoStoreFactory | undefined;
     public router: Router;
+    private testController: TestController
     private routingConfig() {
         if (this.app === null) return;
         this.app.get('/test', function (req, res) {
@@ -53,6 +55,8 @@ export default class Server {
         this.db = new DataBase();
         this.startServer();
         this.router = new Router(this.app, this.db.getUser());
+        this.testController = new TestController();
+
 
 
 
