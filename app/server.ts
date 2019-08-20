@@ -54,8 +54,9 @@ export default class Server {
         this.routingConfig();
         this.db = new DataBase();
         this.startServer();
-        this.router = new Router(this.app, this.db.getUser());
         this.testController = new TestController();
+        this.router = new Router(this.app, this.db.getUser(), this.testController);
+
 
 
 

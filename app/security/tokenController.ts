@@ -2,10 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import * as jwt from 'jsonwebtoken';
 import Key from "./key";
 
-
-
+/**
+ * Klasa odpowiadająca za uwierzytelnianie tokenów przechowywanych w sesji.
+ * 
+ */
 export class TokenController {
-
     public static checkToken(req: Request, res: Response, next: NextFunction) {
         let token: any = req.headers['x-access-token'] || req.headers['authorization'] || req!.session!.token; // Express headers are auto converted to lowercase
         if (token) {
@@ -15,7 +16,6 @@ export class TokenController {
             }
             jwt.verify(token, Key.getKey(), (err: any, decoded: any) => {
                 if (err) {
-
                     req!.session!.destroy(() => {
                         console.log("Usuwam sesje")
                     })

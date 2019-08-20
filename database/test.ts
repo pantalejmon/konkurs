@@ -42,8 +42,8 @@ export class TestController {
     }
 
 
-    checkAnswers(pytanie: string, answer: string): boolean {
-        let correctAnswer: string;
+    checkAnswersString(pytanie: string, answer: string): boolean {
+        let correctAnswer: string = "";
         for (let i: number = 0; i < this.bazaPytan.pytania.length; i++) {
             if (this.bazaPytan.pytania[i].tresc === pytanie) correctAnswer = this.bazaPytan.pytania[i].poprawna_odpowiedz;
         }
