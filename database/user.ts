@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import { userInfo } from 'os';
 
 
 class UserSchema extends mongoose.Schema {
@@ -12,8 +11,8 @@ class UserSchema extends mongoose.Schema {
                 required: true,
                 trim: false
             },
-            username: {
-                type: String,
+            level: {
+                type: Number,
                 unique: false,
                 required: true,
                 trim: false
@@ -57,10 +56,10 @@ export class User {
             })
     }
 
-    static createUser(mail: string, name: string, pass: string, callback?: any) {
+    static createUser(mail: string, pass: string, callback?: any) {
         let userData = {
             email: mail,
-            username: name,
+            level: 1,
             password: pass,
             answer: [] as any
         }
@@ -96,6 +95,59 @@ export class User {
     }
 
     static changePassword(mail: string, oldPass: string, newPass: string, callback?: any) {
+
+    }
+
+    static getLevel(mail: string, callback: any) {
+        let level: number;
+        User.usr.findOne({ email: mail }, (err, user: any) => {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            }
+            else callback(err, user.level)
+        })
+    }
+
+    static getAnswers(mail: string, callback: any) {
+        User.usr.findOne({ email: mail }, (err, user: any) => {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            }
+            else callback(err, user.answer);
+        })
+    }
+
+    static setLevel(mail: string, lvl: number, callback: any) {
+        console.log("level:" + lvl);
+        User.usr.updateOne({ email: mail }, { $set: { level: lvl } }, (err, user: any) => {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            }
+            else {
+                console.log(user);
+                console.log("Zmieniam userowi level na " + lvl);
+                callback(err, lvl)
+            }
+
+        })
+    }
+
+    static setAnswer(mail: string, level: number, result: boolean, callback: any) {
+        User.usr.findOne({ email: mail }, (err, user: any) => {
+            let tab: Array<boolean> = user.answer;
+            tab[level - 1] = result;
+            User.usr.updateOne({ email: mail }, { answer: tab }, (err, user: any) => {
+                if (err) {
+                    console.log(err);
+                    callback(err, null);
+                }
+                else callback(err, user)
+            })
+        });
+
 
     }
 

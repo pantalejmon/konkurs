@@ -5,6 +5,8 @@ import MongoStore from 'connect-mongo';
 import { Router } from './router';
 import bodyParser from "body-parser"
 import { TestController } from '../database/test';
+import RateLimit from 'express-rate-limit'
+
 
 
 
@@ -31,17 +33,29 @@ export default class Server {
         this.app.use(session({
             secret: 'work hard',
             resave: true,
+            cookie: {
+                expires: (new Date(Date.now() + (30 * 60000)))
+            },
             saveUninitialized: false,
             store: new this.mongoStore({
                 mongooseConnection: this.db.connection
-            })
+            }),
         }));
+
+        const limiter = new RateLimit({
+            windowMs: 15 * 60 * 1000, // 15 minutes
+            max: 100,
+        })
+        this.app.use("/apims/", limiter)
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
         this.app.use(express.static("./public", { index: false, extensions: ['html'] }));
         this.app.use(function (req, res, next) {
             res.header("Access-Control-Allow-Origin", "10.70.108.6:8080"); // update to match the domain you will make the request from
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            res.header("X-XSS-Protection", "1");
+            res.header("X-Content-Type-Options", "nosniff");
+            res.header("Content-Security-Policy", "script-src 'self'");
             next();
         });
         this.app.listen(8080, function () {
@@ -56,12 +70,6 @@ export default class Server {
         this.startServer();
         this.testController = new TestController();
         this.router = new Router(this.app, this.db.getUser(), this.testController);
-
-
-
-
-
-
 
         // Error Handlers
         this.app.use(function (req, res, next) {

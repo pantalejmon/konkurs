@@ -70,8 +70,7 @@ export class Router {
         this.router.post(this.api + "/register", (req, res, next) => {
             let email: string = req.body.email;
             let pass: string = req.body.pass;
-            let name: string = req.body.name;
-            User.createUser(email, name, pass, (err: Error, user: any) => {
+            User.createUser(email, pass, (err: Error, user: any) => {
                 if (err) {
                     console.log("cos nie wyszlo" + err);
                 }
@@ -85,6 +84,94 @@ export class Router {
         // Wyslanie nazwy zalogowanego użytkownika
         this.router.get(this.api + "/username", this.AuthController.authenticateJWT, (req, res, next) => {
             res.send(req!.session!.username);
+        });
+
+        this.router.get(this.api + "/start", this.AuthController.authenticateJWT, (req, res, next) => {
+
+            console.log("Dostalem start");
+            let level: number;
+            User.getLevel(req!.session!.username, (err: Error, level: number) => {
+                if (level == 50) {
+                    User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
+                        let wynik: number = 0;
+                        for (let i: number = 0; i < ans.length; i++) {
+                            if (ans[i] === true) wynik += 1;
+                        }
+                        let wynikPack = {
+                            wynik: wynik
+                        }
+                        res.send(wynikPack);
+                    });
+                } else {
+                    console.log("Odpowiadam");
+                    let questPack = {
+                        question: this.testController.getQuestion(level),
+                        answer: this.testController.getAnswers(level)
+                    }
+                    res.send(questPack);
+                }
+            });
+
+
+        });
+
+        this.router.post(this.api + "/answer", this.AuthController.authenticateJWT, (req, res, next) => {
+            console.log(req.body);
+            let ans: string = req.body.answer;
+            let lvl: number;
+
+            User.getLevel(req!.session!.username, (err: Error, level: number) => {
+                if (level == 50) {
+                    User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
+                        let wynik: number = 0;
+                        for (let i: number = 0; i < ans.length; i++) {
+                            if (ans[i] === true) wynik += 1;
+                        }
+                        let wynikPack = {
+                            wynik: wynik
+                        }
+                        res.send(wynikPack);
+                    });
+                } else {
+                    if (this.testController.checkAnswers(level, ans)) {
+                        //console.log("dobra odpowiedz")
+                        User.setAnswer(req!.session!.username, level, true, (err: Error, usr: any) => {
+                            //console.log("Level przed: " + level)
+                            if (err) {
+                                console.log(err);
+                                return;
+                            }
+                            level += 1;
+                            User.setLevel(req!.session!.username, level, (err: Error, lvl: number) => {
+                                if (err) {
+                                    console.log(err);
+                                    return;
+                                }
+                                console.log("level po: " + lvl)
+                                let questPack = {
+                                    question: this.testController.getQuestion(lvl),
+                                    answer: this.testController.getAnswers(lvl)
+                                }
+                                res.send(questPack);
+                            })
+                        });
+                    } else {
+                        level += 1;
+                        User.setLevel(req!.session!.username, level, (err: Error, lvl: number) => {
+                            if (err) {
+                                console.log(err);
+                                return;
+                            }
+                            let questPack = {
+                                question: this.testController.getQuestion(level),
+                                answer: this.testController.getAnswers(level)
+                            }
+                            res.send(questPack);
+                        })
+                    }
+                }
+            });
+
         });
 
 
