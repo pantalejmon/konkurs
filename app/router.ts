@@ -1,12 +1,7 @@
 import { User } from './../database/user';
 import express from 'express';
-import passport from 'passport';
-import Key from './security/key';
-import * as jwt from 'jsonwebtoken';
 import { AuthController } from './security/authController';
 import { TokenController } from './security/tokenController';
-import session from 'express-session';
-import { stringify } from 'querystring';
 import { TestController } from '../database/test';
 
 /**
@@ -49,7 +44,16 @@ export class Router {
                     token = TokenController.generateNewToken(user.email, 600);
                     req!.session!.token = token
                     req!.session!.username = user.email;
-                    res.redirect("/user/terminal");
+                    req!.session!.level = 1;
+                    User.getToken(email, (err: Error, tkn: boolean) => {
+                        if (err) console.log(err);
+                        else {
+                            console.log("odczytany token:" + tkn)
+                            req!.session!.tkn = tkn;
+                            res.redirect("/user/terminal");
+                        }
+                    })
+
                 }
                 else {
                     res.send("Zle haslo");
@@ -74,7 +78,7 @@ export class Router {
                 if (err) {
                     console.log("cos nie wyszlo" + err);
                 }
-                res.send(("Dodano użytkonika" + user.email));
+                res.redirect("/login");
             });
         });
 
@@ -88,9 +92,11 @@ export class Router {
 
         this.router.get(this.api + "/start", this.AuthController.authenticateJWT, (req, res, next) => {
 
-            console.log("Dostalem start");
+            console.log("Dostalem start, token:" + req!.session!.tkn);
             let level: number;
-            User.getLevel(req!.session!.username, (err: Error, level: number) => {
+            level = req!.session!.level;
+            if (req!.session!.tkn == false) {
+                console.log("Level: " + level)
                 if (level == 50) {
                     User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
                         let wynik: number = 0;
@@ -110,7 +116,19 @@ export class Router {
                     }
                     res.send(questPack);
                 }
-            });
+            } else {
+                console.log("token true");
+                User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
+                    let wynik: number = 0;
+                    for (let i: number = 0; i < ans.length; i++) {
+                        if (ans[i] === true) wynik += 1;
+                    }
+                    let wynikPack = {
+                        wynik: wynik
+                    }
+                    res.send(wynikPack);
+                });
+            }
 
 
         });
@@ -118,9 +136,9 @@ export class Router {
         this.router.post(this.api + "/answer", this.AuthController.authenticateJWT, (req, res, next) => {
             console.log(req.body);
             let ans: string = req.body.answer;
-            let lvl: number;
+            let level: number = req!.session!.level;
 
-            User.getLevel(req!.session!.username, (err: Error, level: number) => {
+            if (req!.session!.tkn == false) {
                 if (level == 50) {
                     User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
                         let wynik: number = 0;
@@ -130,7 +148,11 @@ export class Router {
                         let wynikPack = {
                             wynik: wynik
                         }
+                        if (wynik / 50 >= 0.7) User.setToken(req!.session!.username, true, (err: Error, tkn: boolean) => {
+                            req!.session!.tkn = tkn;
+                        })
                         res.send(wynikPack);
+
                     });
                 } else {
                     if (this.testController.checkAnswers(level, ans)) {
@@ -142,36 +164,38 @@ export class Router {
                                 return;
                             }
                             level += 1;
-                            User.setLevel(req!.session!.username, level, (err: Error, lvl: number) => {
-                                if (err) {
-                                    console.log(err);
-                                    return;
-                                }
-                                console.log("level po: " + lvl)
-                                let questPack = {
-                                    question: this.testController.getQuestion(lvl),
-                                    answer: this.testController.getAnswers(lvl)
-                                }
-                                res.send(questPack);
-                            })
-                        });
-                    } else {
-                        level += 1;
-                        User.setLevel(req!.session!.username, level, (err: Error, lvl: number) => {
-                            if (err) {
-                                console.log(err);
-                                return;
-                            }
+
+                            console.log("level po: " + level)
                             let questPack = {
                                 question: this.testController.getQuestion(level),
                                 answer: this.testController.getAnswers(level)
                             }
                             res.send(questPack);
-                        })
+                            req!.session!.level = level;
+                        });
+                    } else {
+                        level += 1;
+                        req!.session!.level = level;
+
+                        let questPack = {
+                            question: this.testController.getQuestion(level),
+                            answer: this.testController.getAnswers(level)
+                        }
+                        res.send(questPack);
                     }
                 }
-            });
-
+            } else {
+                User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
+                    let wynik: number = 0;
+                    for (let i: number = 0; i < ans.length; i++) {
+                        if (ans[i] === true) wynik += 1;
+                    }
+                    let wynikPack = {
+                        wynik: wynik
+                    }
+                    res.send(wynikPack);
+                });
+            }
         });
 
 

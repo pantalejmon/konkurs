@@ -146,7 +146,7 @@ Command.Answer = {
                 try {
                     let quest = JSON.parse(this.responseText);
                     if (quest.wynik) {
-                        output.write("Zakończyłeś test z wynikiem: " + quest.wynik + "/50 pkt", input);
+                        output.write("Zakończyłeś test z wynikiem: " + (quest.wynik / 50) * 100 + "%", input.join(" "));
                         output.simpleWrite("Gratulacje");
                     } else {
                         output.write("Przesłano odpowiedź, następne pytanie:", input.join(" "));
@@ -225,6 +225,11 @@ Command.Notfound = {
         return output.write('<div>Nieznana komenda, w celu sprawdzenia dostepnych komend wpisz help</div>', input.join(" "));
     }
 };
+Command.LinuxCommand = {
+    getFsCallback: function (input, output) {
+        return output.write('<div>To nie linux kolego ;)</div>', input.join(" "));
+    }
+};
 
 
 Command.Start = {
@@ -238,7 +243,7 @@ Command.Start = {
                 try {
                     let quest = JSON.parse(this.responseText);
                     if (quest.wynik) {
-                        output.write("Zakończyłeś test z wynikiem: " + quest.wynik + "/50 pkt", input);
+                        output.write("Zakończyłeś test z wynikiem: " + (quest.wynik / 50) * 100 + "%", input.join(" "));
                         output.simpleWrite("Gratulacje");
                     } else {
                         output.write(quest.question, input);
@@ -271,7 +276,16 @@ Command.Factory = {
         'clear': Command.Clear,
         'help': Command.Help,
         'logout': Command.Logout,
-        'show': Command.Start
+        'show': Command.Start,
+        'cd': Command.LinuxCommand,
+        'ls': Command.LinuxCommand,
+        'rm': Command.LinuxCommand,
+        'mv': Command.LinuxCommand,
+        'mkdir': Command.LinuxCommand,
+        'vim': Command.LinuxCommand,
+        'echo': Command.LinuxCommand,
+        'netcat': Command.LinuxCommand,
+        'ifconfig': Command.LinuxCommand
     },
 
     create: function (option) {

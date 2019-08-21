@@ -17,6 +17,13 @@ class UserSchema extends mongoose.Schema {
                 required: true,
                 trim: false
             },
+            token: {
+                type: Boolean,
+                unique: false,
+                required: true,
+                trim: false
+            },
+
             password: {
                 type: String,
                 required: true,
@@ -60,6 +67,7 @@ export class User {
         let userData = {
             email: mail,
             level: 1,
+            token: false,
             password: pass,
             answer: [] as any
         }
@@ -97,6 +105,31 @@ export class User {
     static changePassword(mail: string, oldPass: string, newPass: string, callback?: any) {
 
     }
+
+    static getToken(mail: string, callback: any) {
+        User.usr.findOne({ email: mail }, (err, user: any) => {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            }
+            else callback(err, user.token);
+        })
+    }
+
+    static setToken(mail: string, token: boolean, callback: any) {
+        User.usr.updateOne({ email: mail }, { $set: { token: token } }, (err, user: any) => {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            }
+            else {
+                console.log(user);
+                console.log("Zmieniam userowi" + mail + "token na " + token);
+                callback(err, token);
+            }
+        })
+    }
+
 
     static getLevel(mail: string, callback: any) {
         let level: number;

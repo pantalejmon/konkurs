@@ -34,7 +34,7 @@ export default class Server {
             secret: 'work hard',
             resave: true,
             cookie: {
-                expires: (new Date(Date.now() + (30 * 60000)))
+                expires: (new Date(Date.now() + (180 * 60000)))
             },
             saveUninitialized: false,
             store: new this.mongoStore({
