@@ -94,7 +94,7 @@ Terminal.Output = function (element) {
         if (!input) input = "";
         var fromContent = outputElement.innerHTML;
         fromContent += '<div class="cmd-output">';
-        fromContent += "<span style='color:green'>" + promptLine + "</span> " + input + "<div>" + content + "</div>";
+        fromContent += "<span style='color:Chartreuse'>" + promptLine + "</span> " + input + "<div>" + content + "</div>";
         fromContent += '</div>';
         outputElement.innerHTML = fromContent;
         return this;
