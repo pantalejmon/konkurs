@@ -215,8 +215,6 @@ Command.Logout = {
             window.location.host + "/logout");
     }
 };
-
-
 /**
  * Command Not Found
  */
