@@ -128,13 +128,13 @@ Command.Answer = {
 
         // Check Params
         if (input[1] == null) {
-            return output.write('Brak podanej odpowiedzi, jako argument podaj a,b,c lub d');
+            return output.write('Brak podanej odpowiedzi, jako argument podaj a,b,c lub d.');
         }
         if (input[1] != "a" && input[1] != "b" && input[1] != "c" && input[1] != "d") {
-            return output.write('Błędny format odpowiedzi, jako argument podaj a, b, c lub d ');
+            return output.write('Błędny format odpowiedzi, jako argument podaj a, b, c lub d. ');
         }
         if (answers.a.length < 1) {
-            return output.write('Przed odpowiadaniem na pytania użyj komendy start ');
+            return output.write('Przed odpowiadaniem na pytania użyj komendy start. ');
         }
 
         let xhr = new XMLHttpRequest();
@@ -149,7 +149,7 @@ Command.Answer = {
                         output.write("Zakończyłeś test z wynikiem: " + quest.wynik + "/50 pkt", input);
                         output.simpleWrite("Gratulacje");
                     } else {
-                        output.write("Przeslano odpowiedz, nastepne pytanie:", input.join(" "));
+                        output.write("Przesłano odpowiedź, następne pytanie:", input.join(" "));
                         output.simpleWrite(quest.question);
                         answers.a = quest.answer[0];
                         answers.b = quest.answer[1];
