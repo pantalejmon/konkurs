@@ -137,9 +137,9 @@ export class Router {
             console.log(req.body);
             let ans: string = req.body.answer;
             let level: number = req!.session!.level;
-
+            console.log("Level przed: " + level);
             if (req!.session!.tkn == false) {
-                if (level == 50) {
+                if (level === 50) {
                     User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
                         let wynik: number = 0;
                         for (let i: number = 0; i < ans.length; i++) {
@@ -152,11 +152,10 @@ export class Router {
                             req!.session!.tkn = tkn;
                         })
                         res.send(wynikPack);
-
                     });
                 } else {
                     if (this.testController.checkAnswers(level, ans)) {
-                        //console.log("dobra odpowiedz")
+                        console.log("dobra odpowiedz")
                         User.setAnswer(req!.session!.username, level, true, (err: Error, usr: any) => {
                             //console.log("Level przed: " + level)
                             if (err) {
@@ -170,8 +169,9 @@ export class Router {
                                 question: this.testController.getQuestion(level),
                                 answer: this.testController.getAnswers(level)
                             }
-                            res.send(questPack);
+                            console.log()
                             req!.session!.level = level;
+                            res.send(questPack);
                         });
                     } else {
                         level += 1;
