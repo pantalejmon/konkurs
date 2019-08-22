@@ -2,60 +2,67 @@
 
 <html lang="en">
 
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Aplikacja konkursowa</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="scripts/index.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
+</head>
 
-  <body>
+<body>
 
     <form name='form-login' method="POST" action="/apims/login">
-      <div class="imgcontainer">
-        <img src="https://iws.gov.pl/wp-content/uploads/2019/04/LOGO2.jpg" alt="logo" align="mid" img style='height: 100%; width: 100%; object-fit: contain'>
+        <div class="imgcontainer">
+            <img src="https://iws.gov.pl/wp-content/uploads/2019/04/LOGO2.jpg" alt="logo" align="mid" img
+                style='height: 100%; width: 100%; object-fit: contain'>
 
-      </div>
-      <h2 align="center">rejestracja</h2>
-      <div class="container">
-        <p align="justify">
-          Witaj na stronie rejestracyjnej konkursu 'Capture The Flag: Konkurs bezpieczeństwa internetowego'. Aby pomyślnie zarejestrować drużynę, wypełnij formularz zgłoszeniowy.</p>
-
-        <p align="justify"> O aktywowaniu twojego konta zostaniesz powiadomiony mailowo. Dostęp do części testowej konkursu zostanie przyznany wszystkim aktywnym drużynom w dniu rozpoczęcia pierwszego etapu.</p>
-
-        <p align="justify">Regulamin konkursu jest dostępny na <a href="adres regulaminu">tej</a> stronie. </p>
-
-
-
-      </div>
-
-      <div class="container">
-        <div class='form_frame'>
-          <label for="team"><b>Nazwa drużyny</b></label>
-          <input type="team" placeholder="Wprowadź zgłoszoną przez nauczyciela nazwę drużyny" name="team" required>
-
-          <label for="password"><b>Hasło</b></label>
-          <input type="password" placeholder="Wprowadź hasło logowania" name="password" required>
-
-          <label for="email"><b>E-mail</b></label>
-          <input type="email" placeholder="Wprowadź zgłoszony przez nauczyciela adres e-mail" name="email">
-
-          <label for="name1"><b>Imię i nazwisko pierwszego zawodnika</b></label>
-          <input type="name1" placeholder="Imię i nazwisko pierwszego zawodnika" name="name1">
-
-          <label for="name2"><b>Imię i nazwisko drugiego zawodnika</b></label>
-          <input type="name2" placeholder="Jeśli drużyna jest jednoosobowa, pozostaw puste pole" name="name2">
-
-          <button type="submit">Zarejestruj</button>
         </div>
-      </div>
+        <h2 align="center">rejestracja</h2>
+        <div class="container">
+            <p align="justify">
+                Witaj na stronie rejestracyjnej konkursu 'Capture The Flag: Konkurs bezpieczeństwa internetowego'. Aby
+                pomyślnie zarejestrować drużynę, wypełnij formularz zgłoszeniowy.</p>
 
-      <div class="container" style="background-color:#f1f1f1">
-        <span class="psw"><a href="mailto: mail konkursowy"> Potrzebujesz pomocy? Skontaktuj się z administratorami.</a></span>
-      </div>
+            <p align="justify"> O aktywowaniu twojego konta zostaniesz powiadomiony mailowo. Dostęp do części testowej
+                konkursu zostanie przyznany wszystkim aktywnym drużynom w dniu rozpoczęcia pierwszego etapu.</p>
+
+            <p align="justify">Regulamin konkursu jest dostępny na <a href="adres regulaminu">tej</a> stronie. </p>
+
+
+
+        </div>
+
+        <div class="container">
+            <div class='form_frame'>
+                <label for="team"><b>Nazwa drużyny</b></label>
+                <input type="team" placeholder="Wprowadź zgłoszoną przez nauczyciela nazwę drużyny" name="team"
+                    required>
+
+                <label for="password"><b>Hasło</b></label>
+                <input type="password" placeholder="Wprowadź hasło logowania" name="password" required>
+
+                <label for="email"><b>E-mail</b></label>
+                <input type="email" placeholder="Wprowadź zgłoszony przez nauczyciela adres e-mail" name="email">
+
+                <label for="name1"><b>Imię i nazwisko pierwszego zawodnika</b></label>
+                <input type="name1" placeholder="Imię i nazwisko pierwszego zawodnika" name="name1">
+
+                <label for="name2"><b>Imię i nazwisko drugiego zawodnika</b></label>
+                <input type="name2" placeholder="Jeśli drużyna jest jednoosobowa, pozostaw puste pole" name="name2">
+
+                <button type="submit">Zarejestruj</button>
+            </div>
+        </div>
+        <div class="container" style="background-color:#f1f1f1">
+            <span class="psw"><a href="/index.html"> Powrót do strony logowania</a></span>
+        </div>
+        <div class="container" style="background-color:#f1f1f1">
+            <span class="psw"><a href="mailto: mail konkursowy"> Potrzebujesz pomocy? Skontaktuj się z
+                    administratorami.</a></span>
+        </div>
     </form>
 
-  </body>
+</body>
 
 </html>

@@ -84,12 +84,14 @@ export class Router {
             let teamname: string = req.body.teamname;
             let user1: string = req.body.user1;
             let user2: string = req.body.user2;
-
+            if (!email || !pass || !teamname || !user1 || !user2) {
+                res.send("Nie podales wszystkich danych prawidlowo!")
+            }
             User.createUser(email, pass, teamname, user1, user2, (err: Error, user: any) => {
                 if (err) {
                     console.log("cos nie wyszlo" + err);
                 }
-                res.redirect("/login");
+                res.redirect("/index");
             });
         });
 

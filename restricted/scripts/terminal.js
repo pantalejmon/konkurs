@@ -8,7 +8,7 @@ window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileS
 let oldCommand = [];
 let status = 0;
 
-var promptLine = "Konkurs>"
+var promptLine = "~/Konkurs$"
 let answers = {
     a: "",
     b: "",
@@ -310,7 +310,7 @@ function checkName() {
     xhr.addEventListener('load', function () {
         if (this.status === 200) {
             const name = this.responseText;
-            promptLine = name + ":  Konkurs>"
+            promptLine = name + ": ~/Konkurs$"
             document.getElementById("prompt").innerHTML = promptLine;
         }
     })
