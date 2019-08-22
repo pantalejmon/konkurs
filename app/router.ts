@@ -42,7 +42,11 @@ export class Router {
                 if (err) {
                     console.log(err);
                 }
+
                 if (status) {
+                    if (user.valid === false) {
+                        return res.redirect("/inactive.html");
+                    }
                     let token: string = "";
                     token = TokenController.generateNewToken(user.email, 600);
                     req!.session!.token = token
@@ -78,15 +82,9 @@ export class Router {
             let email: string = req.body.email;
             let pass: string = req.body.pass;
             let teamname: string = req.body.teamname;
-            let user1: IUser = {
-                forname: req.body.forname1,
-                surname: req.body.surname1
-            }
+            let user1: string = req.body.user1;
+            let user2: string = req.body.user2;
 
-            let user2: IUser = {
-                forname: req.body.forname2,
-                surname: req.body.surname2
-            }
             User.createUser(email, pass, teamname, user1, user2, (err: Error, user: any) => {
                 if (err) {
                     console.log("cos nie wyszlo" + err);
