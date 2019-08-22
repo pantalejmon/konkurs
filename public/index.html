@@ -7,20 +7,51 @@
     <title>Aplikacja konkursowa</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="scripts/index.js"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-    <div class="mainCard">
-        <h1>Witaj w konkursie :)</h1>
-        <a href="./login.html" class="forminput inputsubmit">
-            <h2>logowanie</h2>
-        </a>
 
-        <a href="./registration.html" class="forminput inputsubmit">
-            <h2>Rejestracja</h2>
-        </a>
-    </div>
+    <form name='form-login' method="POST" action="/apims/login">
+        <div class="imgcontainer">
+            <img src="https://iws.gov.pl/wp-content/uploads/2019/04/LOGO2.jpg" alt="logo" align="mid" img
+                style='height: 100%; width: 100%; object-fit: contain'>
+
+        </div>
+        <h2 align="center">test_wiedzy</h2>
+        <div class="container">
+            <p align="justify">
+                Witaj na stronie logowania konkursu 'Capture The Flag: Konkurs bezpieczeństwa internetowego'. Aby
+                zalogować się do platformy konkursowej, użyj podanych przy rejestracji adresu e-mail i hasła.</p>
+
+            <p align="justify">Od momentu zalogowania masz trzy godziny na rozwiązanie testu sprawdzającego wiedzę z
+                zakresu bezpieczeństwa sieciowego, przeprowadzania testów penetracyjnych i systemów operacyjnych.
+                Uzyskanie 70% i więcej poprawnych odpowiedzi pozwoli ci uzyskać unikatowy link umożliwiający
+                zarejestrowanie się w części zadaniowej konkursu. Pamiętaj, że unikatowy link zadziała tylko raz, więc
+                podzielenie się nim z innymi zespołami może uniemożliwić ci wzięcie udziału w dalszej części konkursu!
+            </p>
+
+            <p align="justify">Inaczej niż w szkole, wspomaganie się źródłami podczas rozwiązywania testu nie jest
+                zakazane, a nawet jest <i>zalecane</i>. ;) Powodzenia!</p>
+        </div>
+
+        <div class="container">
+            <label for="uname"><b>E-mail</b></label>
+            <input type="email" placeholder="Wprowadź adres e-mail" name="email" required>
+
+            <label for="psw"><b>Hasło</b></label>
+            <input type="password" placeholder="Wprowadź hasło" name="pass" required pattern=" /^(?=.*\d).{8,}$/"
+                title="Haslo musi posiadać co najmniej 8 znaków i zawierać 1 cyfrę">
+
+            <button type="submit">Zaloguj</button>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+            <span class="psw"><a href="mailto: norbert.banski@ms.gov.pl"> Zapomniałeś hasła? Skontaktuj się z
+                    administratorami konkursu.</a></span>
+        </div>
+    </form>
+
 </body>
 
 </html>
