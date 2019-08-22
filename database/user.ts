@@ -22,7 +22,10 @@ class UserSchema extends mongoose.Schema {
                 type: String,
                 required: true
             },
-
+            school: {
+                type: String,
+                required: true
+            },
             user1: {
                 type: {
                     forname: { type: String, required: true },
@@ -79,7 +82,7 @@ export class User {
             })
     }
 
-    static createUser(mail: string, pass: string, teamname: string, user1: IUser, user2: IUser, callback?: any) {
+    static createUser(mail: string, pass: string, teamname: string, school: string, user1: IUser, user2: IUser, callback?: any) {
         let userData = {
             email: mail,
             password: pass,
