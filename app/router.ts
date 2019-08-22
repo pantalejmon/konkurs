@@ -3,6 +3,7 @@ import express from 'express';
 import { AuthController } from './security/authController';
 import { TokenController } from './security/tokenController';
 import { TestController } from '../database/test';
+import { IUser } from '../database/IUser';
 
 
 
@@ -47,7 +48,7 @@ export class Router {
                     req!.session!.token = token
                     req!.session!.username = user.email;
                     req!.session!.level = 1;
-                    User.getToken(email, (err: Error, tkn: boolean) => {
+                    User.getPassed(email, (err: Error, tkn: boolean) => {
                         if (err) console.log(err);
                         else {
                             console.log("odczytany token:" + tkn)
@@ -76,7 +77,17 @@ export class Router {
         this.router.post(this.api + "/register", (req, res, next) => {
             let email: string = req.body.email;
             let pass: string = req.body.pass;
-            User.createUser(email, pass, (err: Error, user: any) => {
+            let teamname: string = req.body.teamname;
+            let user1: IUser = {
+                forname: req.body.forname1,
+                surname: req.body.surname1
+            }
+
+            let user2: IUser = {
+                forname: req.body.forname2,
+                surname: req.body.surname2
+            }
+            User.createUser(email, pass, teamname, user1, user2, (err: Error, user: any) => {
                 if (err) {
                     console.log("cos nie wyszlo" + err);
                 }
@@ -131,8 +142,6 @@ export class Router {
                     res.send(wynikPack);
                 });
             }
-
-
         });
 
         this.router.post(this.api + "/answer", this.AuthController.authenticateJWT, (req, res, next) => {
@@ -150,7 +159,7 @@ export class Router {
                         let wynikPack = {
                             wynik: wynik
                         }
-                        if (wynik / 50 >= 0.7) User.setToken(req!.session!.username, true, (err: Error, tkn: boolean) => {
+                        if (wynik / 50 >= 0.7) User.setPassed(req!.session!.username, true, (err: Error, tkn: boolean) => {
                             req!.session!.tkn = tkn;
                         })
                         res.send(wynikPack);

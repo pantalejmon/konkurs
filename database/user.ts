@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { IUser } from './IUser';
 
 
 class UserSchema extends mongoose.Schema {
@@ -11,23 +12,38 @@ class UserSchema extends mongoose.Schema {
                 required: true,
                 trim: false
             },
-            level: {
-                type: Number,
-                unique: false,
-                required: true,
-                trim: false
+
+            password: {
+                type: String,
+                required: true
             },
-            token: {
+
+            teamname: {
+                type: String,
+                required: true
+            },
+
+            user1: {
+                type: {
+                    forname: { type: String, required: true },
+                    surname: { type: String, required: true }
+                }
+            },
+
+            user2: {
+                type: {
+                    forname: { type: String, required: false },
+                    surname: { type: String, required: false }
+                }
+            },
+
+            passed: {
                 type: Boolean,
                 unique: false,
                 required: true,
                 trim: false
             },
 
-            password: {
-                type: String,
-                required: true,
-            },
             answer: [{
                 type: Boolean,
             }]
@@ -63,12 +79,14 @@ export class User {
             })
     }
 
-    static createUser(mail: string, pass: string, callback?: any) {
+    static createUser(mail: string, pass: string, teamname: string, user1: IUser, user2: IUser, callback?: any) {
         let userData = {
             email: mail,
-            level: 1,
-            token: false,
             password: pass,
+            teamname: teamname,
+            user1: user1,
+            user2: user2,
+            passed: false,
             answer: [] as any
         }
         let i: number = 0;
@@ -106,39 +124,27 @@ export class User {
 
     }
 
-    static getToken(mail: string, callback: any) {
+    static getPassed(mail: string, callback: any) {
         User.usr.findOne({ email: mail }, (err, user: any) => {
             if (err) {
                 console.log(err);
                 callback(err, null);
             }
-            else callback(err, user.token);
+            else callback(err, user.passed);
         })
     }
 
-    static setToken(mail: string, token: boolean, callback: any) {
-        User.usr.updateOne({ email: mail }, { $set: { token: token } }, (err, user: any) => {
+    static setPassed(mail: string, passed: boolean, callback: any) {
+        User.usr.updateOne({ email: mail }, { $set: { passed: passed } }, (err, user: any) => {
             if (err) {
                 console.log(err);
                 callback(err, null);
             }
             else {
                 console.log(user);
-                console.log("Zmieniam userowi" + mail + "token na " + token);
-                callback(err, token);
+                console.log("Zmieniam userowi" + mail + "token na " + passed);
+                callback(err, passed);
             }
-        })
-    }
-
-
-    static getLevel(mail: string, callback: any) {
-        let level: number;
-        User.usr.findOne({ email: mail }, (err, user: any) => {
-            if (err) {
-                console.log(err);
-                callback(err, null);
-            }
-            else callback(err, user.level)
         })
     }
 
@@ -152,21 +158,6 @@ export class User {
         })
     }
 
-    static setLevel(mail: string, lvl: number, callback: any) {
-        console.log("level:" + lvl);
-        User.usr.updateOne({ email: mail }, { $set: { level: lvl } }, (err, user: any) => {
-            if (err) {
-                console.log(err);
-                callback(err, null);
-            }
-            else {
-                console.log(user);
-                console.log("Zmieniam userowi level na " + lvl);
-                callback(err, lvl)
-            }
-
-        })
-    }
 
     static setAnswer(mail: string, level: number, result: boolean, callback: any) {
         User.usr.findOne({ email: mail }, (err, user: any) => {
@@ -180,8 +171,6 @@ export class User {
                 else callback(err, user)
             })
         });
-
-
     }
 
     public static getBase() {
