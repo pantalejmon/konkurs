@@ -12,10 +12,9 @@
 
 <body>
 
-    <form name='form-login' method="POST" action="/apims/login">
+    <form name='form-login' method="POST" action="/apims/register">
         <div class="imgcontainer">
-            <img src="https://iws.gov.pl/wp-content/uploads/2019/04/LOGO2.jpg" alt="logo" align="mid" img
-                style='height: 100%; width: 100%; object-fit: contain'>
+            <img src="data/logos.png" alt="logo" align="mid" img style='height: 100%; width: 100%; object-fit: contain'>
 
         </div>
         <h2 align="center">rejestracja</h2>
@@ -36,20 +35,20 @@
         <div class="container">
             <div class='form_frame'>
                 <label for="team"><b>Nazwa drużyny</b></label>
-                <input type="team" placeholder="Wprowadź zgłoszoną przez nauczyciela nazwę drużyny" name="team"
+                <input type="team" placeholder="Wprowadź zgłoszoną przez nauczyciela nazwę drużyny" name="teamname"
                     required>
 
                 <label for="password"><b>Hasło</b></label>
-                <input type="password" placeholder="Wprowadź hasło logowania" name="password" required>
+                <input type="password" placeholder="Wprowadź hasło logowania" name="pass" required>
 
                 <label for="email"><b>E-mail</b></label>
                 <input type="email" placeholder="Wprowadź zgłoszony przez nauczyciela adres e-mail" name="email">
 
                 <label for="name1"><b>Imię i nazwisko pierwszego zawodnika</b></label>
-                <input type="name1" placeholder="Imię i nazwisko pierwszego zawodnika" name="name1">
+                <input type="text" placeholder="Imię i nazwisko pierwszego zawodnika" name="user1">
 
                 <label for="name2"><b>Imię i nazwisko drugiego zawodnika</b></label>
-                <input type="name2" placeholder="Jeśli drużyna jest jednoosobowa, pozostaw puste pole" name="name2">
+                <input type="text" placeholder="Jeśli drużyna jest jednoosobowa, pozostaw puste pole" name="user2">
 
                 <button type="submit">Zarejestruj</button>
             </div>

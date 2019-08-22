@@ -68,13 +68,15 @@ export class User {
                     let error: Error = new Error("User not found");
                     return (callback(error));
                 }
-                console.log("mail: " + email, "haslo: ", pass);
-                console.log(user);
+
+
                 bcrypt.compare(pass, user.password, (err: Error, result: any) => {
 
                     console.log("porownuje bcrypt, status:", result);
                     if (result === true) {
+                        console.log("Zalogowano użytkownika: " + email);
                         return callback(null, true, user);
+
                     }
                     else return callback(null, false, null);
                 });

@@ -63,7 +63,7 @@ export class Router {
 
                 }
                 else {
-                    res.send("Zle haslo");
+                    res.redirect("/wronglogin.html");
                 }
             });
 
@@ -74,7 +74,7 @@ export class Router {
             req!.session!.destroy(() => {
                 console.log("Usuwam sesje")
             })
-            res.redirect("/login");
+            res.redirect("/index");
         });
 
         // Rejestracja
@@ -85,14 +85,15 @@ export class Router {
             let user1: string = req.body.user1;
             let user2: string = req.body.user2;
             if (!email || !pass || !teamname || !user1 || !user2) {
-                res.send("Nie podales wszystkich danych prawidlowo!")
+                res.redirect("/wrondgregistration.html");
+            } else {
+                User.createUser(email, pass, teamname, user1, user2, (err: Error, user: any) => {
+                    if (err) {
+                        console.log("cos nie wyszlo" + err);
+                    }
+                    res.redirect("/index");
+                });
             }
-            User.createUser(email, pass, teamname, user1, user2, (err: Error, user: any) => {
-                if (err) {
-                    console.log("cos nie wyszlo" + err);
-                }
-                res.redirect("/index");
-            });
         });
 
 

@@ -94,7 +94,7 @@ Terminal.Output = function (element) {
         if (!input) input = "";
         var fromContent = outputElement.innerHTML;
         fromContent += '<div class="cmd-output">';
-        fromContent += "<span style='color:Chartreuse'>" + promptLine + "</span> " + input + "<div>" + content + "</div>";
+        fromContent += promptLine + input + "<div>" + content + "</div>";
         fromContent += '</div>';
         outputElement.innerHTML = fromContent;
         return this;
@@ -212,7 +212,7 @@ Command.Logout = {
         //wysyłamy połączenie
         xhr.send();
         window.location.replace("http://" +
-            window.location.host + "/logout");
+            window.location.host + "/index");
     }
 };
 /**
@@ -310,7 +310,7 @@ function checkName() {
     xhr.addEventListener('load', function () {
         if (this.status === 200) {
             const name = this.responseText;
-            promptLine = name + ": ~/Konkurs$"
+            promptLine = "<span style='color:Chartreuse'>" + name + "</span>" + ":" + "<span style='color:RoyalBlue'>" + "~/Konkurs" + "</span>" + "$ "
             document.getElementById("prompt").innerHTML = promptLine;
         }
     })
