@@ -4,7 +4,7 @@ import session from "express-session";
 import MongoStore from 'connect-mongo';
 import { Router } from './router';
 import bodyParser from "body-parser"
-import { TestController } from '../database/test';
+import { TestController } from '../database/testController';
 import RateLimit from 'express-rate-limit'
 
 

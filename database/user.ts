@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import { IUser } from './IUser';
 
 
 class UserSchema extends mongoose.Schema {

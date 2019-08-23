@@ -301,6 +301,7 @@ window.onload = function () {
     document.getElementById("prompt").innerHTML = promptLine;
     new Terminal.Events('cmdline', 'output');
     checkName();
+
 };
 
 function checkName() {

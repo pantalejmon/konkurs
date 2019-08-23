@@ -2,8 +2,7 @@ import { User } from './../database/user';
 import express from 'express';
 import { AuthController } from './security/authController';
 import { TokenController } from './security/tokenController';
-import { TestController } from '../database/test';
-import { IUser } from '../database/IUser';
+import { TestController } from '../database/testController';
 
 
 
