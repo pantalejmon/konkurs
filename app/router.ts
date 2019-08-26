@@ -56,7 +56,21 @@ export class Router {
                         else {
                             console.log("odczytany token:" + tkn)
                             req!.session!.tkn = tkn;
-                            res.redirect("/user/terminal");
+
+                            User.getExpires(email, (err: Error, exp: number) => {
+                                if (exp - new Date().getTime() < 0) {
+                                    req!.session!.level = 1;
+                                    res.redirect("/user/terminal");
+                                }
+                                else {
+                                    User.getLevel(email, (err: Error, level: number) => {
+                                        if (err) console.log("Get level error:" + err);
+                                        req!.session!.level = level;
+                                        req!.session!.expiresTime = exp;
+                                        res.redirect("/user/terminal");
+                                    });
+                                }
+                            })
                         }
                     })
                 }
@@ -108,6 +122,11 @@ export class Router {
             let level: number;
             level = req!.session!.level;
             if (req!.session!.tkn == false) {
+                if (req!.session!.expiresTime - new Date().getTime() < 0) {
+                    level = 1
+                    req!.session!.level = 1;
+                }
+
                 console.log("Level: " + level)
                 if (level == 51) {
                     User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
@@ -120,11 +139,27 @@ export class Router {
                         }
                         res.send(wynikPack);
                     });
+                } else if (level == 1) {
+                    User.clearTest(req!.session!.username, (err: Error, user: any) => {
+                        let questPack = {
+                            question: this.testController.getQuestion(level),
+                            answer: this.testController.getAnswers(level),
+                            level: level
+                        }
+                        User.getExpires(req!.session!.username, (err: Error, exp: number) => {
+                            req!.session!.expiresTime = exp;
+                            res.send(questPack);
+                        })
+
+                    })
+
                 } else {
                     console.log("Odpowiadam");
+                    // req!.session!.expired = new Date().getTime + 3 * 60 *
                     let questPack = {
                         question: this.testController.getQuestion(level),
-                        answer: this.testController.getAnswers(level)
+                        answer: this.testController.getAnswers(level),
+                        level: level
                     }
                     res.send(questPack);
                 }
@@ -146,12 +181,79 @@ export class Router {
         this.router.post(this.api + "/answer", this.AuthController.authenticateJWT, (req, res, next) => {
             let ans: string = req.body.answer;
             let level: number = req!.session!.level;
-            console.log("Odpowiada user: " + req!.session!.username);
-            console.log("Level przed: " + level);
-            console.log("Pytanie: " + this.testController.getQuestion(level))
-            console.log("Podana odpowiedz:" + req.body.answer);
-            if (req!.session!.tkn == false) {
-                if (level === 51) {
+            if (req!.session!.expiresTime - new Date().getTime() < 0) {
+                level = 1
+                req!.session!.level = 1;
+                User.clearTest(req!.session!.username, (err: Error, user: any) => {
+                    let questPack = {
+                        question: this.testController.getQuestion(user.level),
+                        answer: this.testController.getAnswers(user.level),
+                        level: level
+                    }
+                    console.log()
+                    req!.session!.level = user.level;
+                    res.send(questPack);
+                })
+            } else {
+                console.log("Odpowiada user: " + req!.session!.username);
+                console.log("Level przed: " + level);
+                console.log("Pytanie: " + this.testController.getQuestion(level))
+                console.log("Podana odpowiedz:" + req.body.answer);
+                if (req!.session!.tkn == false) {
+                    if (level === 51) {
+                        User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
+                            let wynik: number = 0;
+                            for (let i: number = 0; i < ans.length; i++) {
+                                if (ans[i] === true) wynik += 1;
+                            }
+                            let wynikPack = {
+                                wynik: wynik
+                            }
+                            if (wynik / 50 >= 0.7) User.setPassed(req!.session!.username, true, (err: Error, tkn: boolean) => {
+                                req!.session!.tkn = tkn;
+                            })
+                            res.send(wynikPack);
+                        });
+                    } else {
+                        if (this.testController.checkAnswers(level, ans)) {
+                            console.log("dobra odpowiedz")
+                            User.setAnswer(req!.session!.username, level, true, (err: Error, usr: any) => {
+                                if (err) {
+                                    console.log(err);
+                                    return;
+                                }
+                                level += 1;
+                                User.setLevel(req!.session!.username, level, (err: Error, user: any) => {
+                                    console.log(user)
+                                    console.log("level po: " + level)
+                                    let questPack = {
+                                        question: this.testController.getQuestion(level),
+                                        answer: this.testController.getAnswers(level),
+                                        level: level
+                                    }
+                                    console.log()
+                                    req!.session!.level = level;
+                                    res.send(questPack);
+                                })
+
+                            });
+                        } else {
+                            console.log("zla odpowiedz");
+                            level += 1;
+                            User.setLevel(req!.session!.username, level, (err: Error, user: any) => {
+                                console.log("level po: " + level)
+                                let questPack = {
+                                    question: this.testController.getQuestion(level),
+                                    answer: this.testController.getAnswers(level),
+                                    level: level
+                                }
+                                console.log()
+                                req!.session!.level = level;
+                                res.send(questPack);
+                            })
+                        }
+                    }
+                } else {
                     User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
                         let wynik: number = 0;
                         for (let i: number = 0; i < ans.length; i++) {
@@ -160,55 +262,40 @@ export class Router {
                         let wynikPack = {
                             wynik: wynik
                         }
-                        if (wynik / 50 >= 0.7) User.setPassed(req!.session!.username, true, (err: Error, tkn: boolean) => {
-                            req!.session!.tkn = tkn;
-                        })
                         res.send(wynikPack);
                     });
-                } else {
-                    if (this.testController.checkAnswers(level, ans)) {
-                        console.log("dobra odpowiedz")
-                        User.setAnswer(req!.session!.username, level, true, (err: Error, usr: any) => {
-                            if (err) {
-                                console.log(err);
-                                return;
-                            }
-                            level += 1;
-
-                            console.log("level po: " + level)
-                            let questPack = {
-                                question: this.testController.getQuestion(level),
-                                answer: this.testController.getAnswers(level)
-                            }
-                            console.log()
-                            req!.session!.level = level;
-                            res.send(questPack);
-                        });
-                    } else {
-                        console.log("zla odpowiedz");
-                        level += 1;
-                        req!.session!.level = level;
-                        let questPack = {
-                            question: this.testController.getQuestion(level),
-                            answer: this.testController.getAnswers(level)
-                        }
-                        res.send(questPack);
-                    }
                 }
-            } else {
-                User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
-                    let wynik: number = 0;
-                    for (let i: number = 0; i < ans.length; i++) {
-                        if (ans[i] === true) wynik += 1;
-                    }
-                    let wynikPack = {
-                        wynik: wynik
-                    }
-                    res.send(wynikPack);
-                });
             }
         });
 
+        this.router.get(this.api + "/time", this.AuthController.authenticateJWT, (req, res, next) => {
+
+            let expiresTime: number = req!.session!.expiresTime
+            let now: number = new Date().getTime();
+            let div: number = expiresTime - now;
+            console.log("Obecny czas: " + now)
+            console.log("Czas konca sesji:" + expiresTime);
+            console.log(div / 60000 + "minut");
+            let time = {
+                minutesLeft: (div / 60000).toFixed(0),
+            }
+
+            res.send(time);
+        });
+
+        this.router.get(this.api + "/reset", this.AuthController.authenticateJWT, (req, res, next) => {
+            User.clearTest(req!.session!.username, (err: Error, user: any) => {
+                if (err) res.sendStatus(500)
+                else {
+                    req!.session!.level = 1;
+                    User.getExpires(req!.session!.username, (err: Error, exp: number) => {
+                        req!.session!.expiresTime = exp;
+                        res.sendStatus(200);
+                    })
+
+                }
+            })
+        });
 
 
         //*******************TESTY*****************/

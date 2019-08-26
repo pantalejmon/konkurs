@@ -199,13 +199,16 @@ Command.Answer = {
 Command.Help = {
     getFsCallback: function (input, output) {
         var helpContent = "";
+        helpContent += '<pre>';
 
-        helpContent += '<div><strong>start</strong>  [start]      | Rozpoczęcie testu od ostatniego pytania </div>';
-        helpContent += '<div><strong>show</strong>  [start]      | Wyświetlenie aktualnego pytania </div>';
-        helpContent += '<div><strong>reset</strong>  [reset]     | Restart testu </div>';
-        helpContent += '<div><strong>answer</strong> [answer {n}] | Podanie odpowiedzi na pytanie </div>';
-        helpContent += '<div><strong>logout</strong> [logout]     | Wylogowanie się z serwera </div>';
-        helpContent += '<div><strong>clear</strong>  [clear]      | Czysci ekran</div>';
+        helpContent += '<div><strong>start</strong>     [start]     | Rozpoczęcie testu od ostatniego pytania </div>';
+        helpContent += '<div><strong>show</strong>      [start]     | Wyświetlenie aktualnego pytania </div>';
+        helpContent += '<div><strong>reset</strong>     [reset]     | Restart testu (Tylko jeśli test jest w trakcie i nie został zaliczony) </div>';
+        helpContent += '<div><strong>time</strong>      [time]      | Wyświetla czas do końca testu w minutach </div>';
+        helpContent += '<div><strong>answer</strong>    [answer n]  | Podanie odpowiedzi na pytanie (Gdzie n jest odpowiedzią) </div>';
+        helpContent += '<div><strong>logout</strong>    [logout]    | Wylogowanie się z serwera </div>';
+        helpContent += '<div><strong>clear</strong>     [clear]     | Czysci ekran</div>';
+        helpContent += '</pre>';
         return output.write(helpContent, input);
     }
 };
@@ -248,6 +251,51 @@ Command.LinuxCommand = {
 };
 
 
+Command.Time = {
+    getFsCallback: function (input, output) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://" +
+            window.location.host + "/apims/time", null);
+        xhr.addEventListener('load', function () {
+            if (this.status === 200) {
+                try {
+                    let quest = JSON.parse(this.responseText);
+                    output.write("<div> Czas do zakończenia podejścia do testu: " + quest.minutesLeft + " minut" + "</div>", input.join(" "))
+
+                } catch (e) {
+                    location.reload();
+                }
+            }
+        })
+
+        //wysyłamy połączenie
+        xhr.send();
+    }
+};
+
+Command.Reset = {
+    getFsCallback: function (input, output) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://" +
+            window.location.host + "/apims/reset", null);
+        xhr.addEventListener('load', function () {
+            if (this.status === 200) {
+                try {
+                    output.write("<div> Zrestartowano test</div>", input.join(" "))
+
+                } catch (e) {
+                    location.reload();
+                }
+            }
+        })
+
+        //wysyłamy połączenie
+        xhr.send();
+    }
+
+};
+
+
 Command.Start = {
     getFsCallback: function (input, output) {
         let xhr = new XMLHttpRequest();
@@ -262,7 +310,8 @@ Command.Start = {
                         output.write("Zakończyłeś test z wynikiem: " + (quest.wynik / 50) * 100 + "%", input.join(" "));
                         output.simpleWrite("Gratulacje");
                     } else {
-                        output.write(quest.question, input);
+                        output.write("Pytanie nr: " + quest.level, input);
+                        output.simpleWrite(quest.question, input);
                         answers.a = quest.answer[0];
                         answers.b = quest.answer[1];
                         answers.c = quest.answer[2];
@@ -293,6 +342,8 @@ Command.Factory = {
         'help': Command.Help,
         'logout': Command.Logout,
         'show': Command.Start,
+        'time': Command.Time,
+        'reset': Command.Reset,
         'cd': Command.LinuxCommand,
         'ls': Command.LinuxCommand,
         'rm': Command.LinuxCommand,

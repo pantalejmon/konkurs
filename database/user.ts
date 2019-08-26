@@ -45,6 +45,19 @@ class UserSchema extends mongoose.Schema {
                 trim: false
             },
 
+            expires: {
+                type: Number,
+                unique: false,
+                required: true,
+                trim: false
+            },
+            level: {
+                type: Number,
+                unique: false,
+                required: true,
+                trim: false
+            },
+
             answer: [{
                 type: Boolean,
             }]
@@ -91,7 +104,9 @@ export class User {
             user2: user2,
             passed: false,
             answer: [] as any,
-            valid: false
+            valid: false,
+            expires: 0,
+            level: 1
         }
         let i: number = 0;
         while (i < 50) {
@@ -176,6 +191,49 @@ export class User {
             })
         });
     }
+    static getLevel(mail: string, callback: any) {
+        User.usr.findOne({ email: mail }, (err, user: any) => {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            }
+            else {
+                // console.log("Zalogownay user " + user);
+                callback(err, user.level);
+            }
+
+        })
+    }
+
+    static setLevel(mail: string, level: number, callback: any) {
+        User.usr.updateOne({ email: mail }, { $set: { level: level } }, (err, user: any) => {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            }
+            else callback(err, user)
+        })
+    }
+    static getExpires(mail: string, callback: any) {
+        User.usr.findOne({ email: mail }, (err, user: any) => {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            }
+            else callback(err, user.expires);
+        })
+    }
+
+    static clearTest(mail: string, callback: any) {
+        User.usr.updateOne({ email: mail }, { $set: { expires: (new Date().getTime() + 180 * 60 * 1000), level: 1 } }, (err, user: any) => {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            }
+            else callback(err, user)
+        })
+    }
+
 
     public static getBase() {
         return User.usr;
