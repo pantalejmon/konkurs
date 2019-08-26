@@ -200,7 +200,7 @@ Command.Help = {
     getFsCallback: function (input, output) {
         var helpContent = "";
         helpContent += '<pre>';
-
+        helpContent += '<div><strong>man</strong>       [man]       | Instrukcja działania aplikacji </div>';
         helpContent += '<div><strong>start</strong>     [start]     | Rozpoczęcie testu od ostatniego pytania </div>';
         helpContent += '<div><strong>show</strong>      [start]     | Wyświetlenie aktualnego pytania </div>';
         helpContent += '<div><strong>reset</strong>     [reset]     | Restart testu (Tylko jeśli test jest w trakcie i nie został zaliczony) </div>';
@@ -209,18 +209,39 @@ Command.Help = {
         helpContent += '<div><strong>logout</strong>    [logout]    | Wylogowanie się z serwera </div>';
         helpContent += '<div><strong>clear</strong>     [clear]     | Czyści ekran</div>';
         helpContent += '</pre>';
-        return output.write(helpContent, input);
+        return output.write(helpContent, input.join(" "));
     }
 };
 
 /**
  * Command Clear
  */
+Command.Man = {
+    getFsCallback: function (input, output) {
+        let string = "";
+        string += '<pre>';
+        string += '<div><h4>Intstukcja obsługi aplikacji konkurs:</h4></div>';
+        string += '<div>W celu rozpoczęcia wykonywania testu należy wpisać:</div>';
+        string += '<div><strong>start</strong>. Po wykonaniu tej komendy zostanie wysłane pierwsze pytanie i </div>';
+        string += '<div>rozpocznie się test na którego wykonanie masz <strong>3 godziny</strong>, niezależnie </div>';
+        string += '<div>od wylogowywania się. Test składa się z <strong>50</strong> pytań zamkniętych, w których </div>';
+        string += '<div>poprawna może być tylko <strong>jedna</strong> odpowiedź. Aby zaliczyć test należy </div>';
+        string += '<div>otrzymać wynik <strong>&gt;= 70%</strong> tzn, odpowiedzieć dobrze na conajmniej <strong>35</strong></div>';
+        string += '<div>pytań poprawnie. Po zaliczeniu testu zostanie wygenerowany link</div>';
+        string += '<div>umożliwiający zarejestrowanie się w 2 częsci konkursu. </div>';
+        string += '<div></div>';
+        string += '<div>Powodzenia !</div>';
+        string += '</pre>';
+        return output.write(string, input.join(" "));
+    }
+};
+
 Command.Clear = {
     getFsCallback: function (input, output) {
         return output.clear();
     }
 };
+
 
 Command.Logout = {
     getFsCallback: function (input, output) {
@@ -344,6 +365,7 @@ Command.Factory = {
         'show': Command.Start,
         'time': Command.Time,
         'reset': Command.Reset,
+        'man': Command.Man,
         'cd': Command.LinuxCommand,
         'ls': Command.LinuxCommand,
         'rm': Command.LinuxCommand,
