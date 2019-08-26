@@ -225,7 +225,7 @@ export class User {
     }
 
     static clearTest(mail: string, callback: any) {
-        User.usr.updateOne({ email: mail }, { $set: { expires: (new Date().getTime() + 180 * 60 * 1000), level: 1 } }, (err, user: any) => {
+        User.usr.updateOne({ email: mail }, { $set: { expires: (new Date().getTime() + 720 * 60 * 1000), level: 1 } }, (err, user: any) => {
             if (err) {
                 console.log(err);
                 callback(err, null);
