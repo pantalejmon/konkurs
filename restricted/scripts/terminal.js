@@ -221,14 +221,13 @@ Command.Man = {
         let string = "";
         string += '<pre>';
         string += '<div><h4>Intstukcja obsługi aplikacji konkurs:</h4></div>';
-        string += '<div>W celu rozpoczęcia wykonywania testu należy wpisać:</div>';
-        string += '<div><strong>start</strong>. Po wykonaniu tej komendy zostanie wysłane pierwsze pytanie i </div>';
-        string += '<div>rozpocznie się test na którego wykonanie masz <strong>3 godziny</strong>, niezależnie </div>';
-        string += '<div>od wylogowywania się. Test składa się z <strong>50</strong> pytań zamkniętych, w których </div>';
-        string += '<div>poprawna może być tylko <strong>jedna</strong> odpowiedź. Aby zaliczyć test należy </div>';
-        string += '<div>otrzymać wynik <strong>&gt;= 70%</strong> tzn, odpowiedzieć dobrze na conajmniej <strong>35</strong></div>';
-        string += '<div>pytań poprawnie. Po zaliczeniu testu zostanie wygenerowany link</div>';
-        string += '<div>umożliwiający zarejestrowanie się w 2 częsci konkursu. </div>';
+        string += '<div>W celu rozpoczęcia wykonywania testu należy wpisać: <strong>start</strong>.</div>';
+        string += '<div>Po wykonaniu tej komendy zostanie wyświetlone pierwsze pytanie, a zegar rozpocznie odliczanie. </div>';
+        string += '<div>Test składa się z <strong>50</strong> pytań zamkniętych, w których poprawna może być tylko <strong>jedna</strong> odpowiedź.</div>';
+        string += '<div>Aby zaliczyć test należy otrzymać wynik <strong>&gt;= 70%</strong> tzn, odpowiedzieć dobrze na conajmniej <strong>35</strong> pytań poprawnie.</div>';
+        string += '<div>Po zaliczeniu testu zostanie wygenerowany link umożliwiający przejście do części praktycznej konkursu.</div>';
+		string += '<div><strong>UWAGA!</strong> Po upływie <strong>12 godzin</strong> od wywołania komendy <strong>start</strong> następuje reset,</div>
+		string += '<div>i osiągnięte postępy zostają wyzerowane. Test można powtarzać wielokrotnie, aż do uzyskania poprawnego wyniku.</div>';
         string += '<div></div>';
         string += '<div>Powodzenia !</div>';
         string += '</pre>';
