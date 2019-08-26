@@ -59,7 +59,6 @@ export class Router {
                             res.redirect("/user/terminal");
                         }
                     })
-
                 }
                 else {
                     res.redirect("/wronglogin.html");
@@ -110,7 +109,7 @@ export class Router {
             level = req!.session!.level;
             if (req!.session!.tkn == false) {
                 console.log("Level: " + level)
-                if (level == 50) {
+                if (level == 51) {
                     User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
                         let wynik: number = 0;
                         for (let i: number = 0; i < ans.length; i++) {
@@ -145,12 +144,14 @@ export class Router {
         });
 
         this.router.post(this.api + "/answer", this.AuthController.authenticateJWT, (req, res, next) => {
-            console.log(req.body);
             let ans: string = req.body.answer;
             let level: number = req!.session!.level;
+            console.log("Odpowiada user: " + req!.session!.username);
             console.log("Level przed: " + level);
+            console.log("Pytanie: " + this.testController.getQuestion(level))
+            console.log("Podana odpowiedz:" + req.body.answer);
             if (req!.session!.tkn == false) {
-                if (level === 50) {
+                if (level === 51) {
                     User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
                         let wynik: number = 0;
                         for (let i: number = 0; i < ans.length; i++) {
@@ -168,7 +169,6 @@ export class Router {
                     if (this.testController.checkAnswers(level, ans)) {
                         console.log("dobra odpowiedz")
                         User.setAnswer(req!.session!.username, level, true, (err: Error, usr: any) => {
-                            //console.log("Level przed: " + level)
                             if (err) {
                                 console.log(err);
                                 return;
@@ -185,9 +185,9 @@ export class Router {
                             res.send(questPack);
                         });
                     } else {
+                        console.log("zla odpowiedz");
                         level += 1;
                         req!.session!.level = level;
-
                         let questPack = {
                             question: this.testController.getQuestion(level),
                             answer: this.testController.getAnswers(level)

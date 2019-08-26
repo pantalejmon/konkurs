@@ -57,6 +57,7 @@ Terminal.Events = function (inputElement, OutputElement) {
             if (oldCommand.length > 0 && status > 0) {
                 status -= 1;
                 input.value = oldCommand[status];
+                setCaretPosition(input, input.value.length);
             } else {
                 status = 0;
                 input.value = "";
@@ -68,6 +69,7 @@ Terminal.Events = function (inputElement, OutputElement) {
             if (oldCommand.length > 0 && status < oldCommand.length) {
                 status += 1;
                 input.value = oldCommand[status - 1];
+                setCaretPosition(input, input.value.length);
             } else {
                 input.value = "";
             }
@@ -80,6 +82,22 @@ Terminal.Events = function (inputElement, OutputElement) {
         input.focus();
     };
 };
+
+function setCaretPosition(ctrl, pos) {
+    // Modern browsers
+    if (ctrl.setSelectionRange) {
+        ctrl.focus();
+        ctrl.setSelectionRange(pos, pos);
+
+        // IE8 and below
+    } else if (ctrl.createTextRange) {
+        var range = ctrl.createTextRange();
+        range.collapse(true);
+        range.moveEnd('character', pos);
+        range.moveStart('character', pos);
+        range.select();
+    }
+}
 
 /**
  * Output
@@ -128,13 +146,13 @@ Command.Answer = {
 
         // Check Params
         if (input[1] == null) {
-            return output.write('Brak podanej odpowiedzi, jako argument podaj a,b,c lub d.');
+            return output.write('Brak podanej odpowiedzi, jako argument podaj a,b,c lub d.', input.join(" "));
         }
         if (input[1] != "a" && input[1] != "b" && input[1] != "c" && input[1] != "d") {
-            return output.write('Błędny format odpowiedzi, jako argument podaj a, b, c lub d. ');
+            return output.write('Błędny format odpowiedzi, jako argument podaj a, b, c lub d. ', input.join(" "));
         }
         if (answers.a.length < 1) {
-            return output.write('Przed odpowiadaniem na pytania użyj komendy start. ');
+            return output.write('Przed odpowiadaniem na pytania użyj komendy start. ', input.join(" "));
         }
 
         let xhr = new XMLHttpRequest();
