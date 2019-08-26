@@ -207,7 +207,7 @@ Command.Help = {
         helpContent += '<div><strong>time</strong>      [time]      | Wyświetla czas do końca testu w minutach </div>';
         helpContent += '<div><strong>answer</strong>    [answer n]  | Podanie odpowiedzi na pytanie (Gdzie n jest odpowiedzią) </div>';
         helpContent += '<div><strong>logout</strong>    [logout]    | Wylogowanie się z serwera </div>';
-        helpContent += '<div><strong>clear</strong>     [clear]     | Czysci ekran</div>';
+        helpContent += '<div><strong>clear</strong>     [clear]     | Czyści ekran</div>';
         helpContent += '</pre>';
         return output.write(helpContent, input);
     }
