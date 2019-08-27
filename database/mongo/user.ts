@@ -233,6 +233,15 @@ export class User {
             else callback(err, user._id.toString());
         })
     }
+
+    static checkMailExist(mail: string, callback: any) {
+        User.usr.findOne({ email: mail }, (err, user: any) => {
+            if (err) throw err;
+            else if (user) callback(err, true)
+            else callback(err, false);
+        })
+    }
+
     static clearTest(mail: string, callback: any) {
         User.usr.updateOne({ email: mail }, { $set: { expires: (new Date().getTime() + 720 * 60 * 1000), level: 1 } }, (err, user: any) => {
             if (err) {

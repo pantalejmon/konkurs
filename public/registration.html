@@ -11,11 +11,14 @@
 </head>
 
 <body>
-
-    <form name='form-login' method="POST" action="/apims/register">
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div id="loader"></div>
+        </div>
+    </div>
+    <form name='form-login' method="POST" onsubmit="return validForm()" action="/apims/register">
         <div class="imgcontainer">
             <img src="data/logos.png" alt="logo" align="mid" img style='height: 100%; width: 100%; object-fit: contain'>
-
         </div>
         <h2 align="center">rejestracja</h2>
         <div class="container">
@@ -34,21 +37,23 @@
 
         <div class="container">
             <div class='form_frame'>
+                <label for="email"><b>E-mail</b></label>
+                <input id="email" type="email" placeholder="Wprowadź zgłoszony przez nauczyciela adres e-mail"
+                    name="email">
+
                 <label for="team"><b>Nazwa drużyny</b></label>
-                <input type="team" placeholder="Wprowadź zgłoszoną przez nauczyciela nazwę drużyny" name="teamname"
-                    required>
+                <input id="teamname" type="text" placeholder="Wprowadź zgłoszoną przez nauczyciela nazwę drużyny"
+                    name="teamname" required>
 
                 <label for="password"><b>Hasło</b></label>
-                <input type="password" placeholder="Wprowadź hasło logowania" name="pass" required>
-
-                <label for="email"><b>E-mail</b></label>
-                <input type="email" placeholder="Wprowadź zgłoszony przez nauczyciela adres e-mail" name="email">
+                <input id="pass" type="password" placeholder="Wprowadź hasło logowania" name="pass" required>
 
                 <label for="name1"><b>Imię i nazwisko pierwszego zawodnika</b></label>
-                <input type="text" placeholder="Imię i nazwisko pierwszego zawodnika" name="user1">
+                <input id="user1" name="user1" type="text" placeholder="Imię i nazwisko pierwszego zawodnika"
+                    name="user1">
 
                 <label for="name2"><b>Imię i nazwisko drugiego zawodnika</b></label>
-                <input type="text" placeholder="Jeśli drużyna jest jednoosobowa, pozostaw puste pole" name="user2">
+                <input id="user2" type="text" placeholder="Imię i nazwisko drugiego zawodnika" name="user2">
 
                 <button type="submit">Zarejestruj</button>
             </div>

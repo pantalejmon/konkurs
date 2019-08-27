@@ -109,6 +109,16 @@ export class Router {
             }
         });
 
+        this.router.post(this.api + "/mailvalidation", (req, res, next) => {
+            let email = req.body.email;
+            console.log(req.body);
+            User.checkMailExist(email, (err: Error, status: boolean) => {
+                let ans = {
+                    exist: status
+                }
+                res.send(ans);
+            });
+        });
 
         //*******************API KONKURSOWE*****************/
 

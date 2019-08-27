@@ -48,7 +48,7 @@ export default class Server {
         })
         this.app.use("/apims/", limiter)
         this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: false }));
+        this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(express.static("./public", { index: false, extensions: ['html'] }));
         this.app.use(function (req, res, next) {
             res.header("Access-Control-Allow-Origin", "10.70.108.6:8080"); // update to match the domain you will make the request from
