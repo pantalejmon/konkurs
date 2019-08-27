@@ -7,6 +7,7 @@ window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileS
 
 let oldCommand = [];
 let status = 0;
+let fullscreen = false;
 
 var promptLine = "~/Konkurs$"
 let answers = {
@@ -166,6 +167,8 @@ Command.Answer = {
                     if (quest.wynik) {
                         output.write("Zakończyłeś test z wynikiem: " + (quest.wynik / 50) * 100 + "%", input.join(" "));
                         output.simpleWrite("Gratulacje");
+                        output.simpleWrite("Personalny link rejestracyjny do części zadaniowej:")
+                        output.simpleWrite("<a style='color:yellow;' href='" + quest.link + "'>" + quest.link + "</a>")
                     } else {
                         output.write("Przesłano odpowiedź, następne pytanie:", input.join(" "));
                         output.simpleWrite(quest.question);
@@ -208,6 +211,7 @@ Command.Help = {
         helpContent += '<div><strong>answer</strong>    [answer n]  | Podanie odpowiedzi na pytanie (Gdzie n jest odpowiedzią) </div>';
         helpContent += '<div><strong>logout</strong>    [logout]    | Wylogowanie się z serwera </div>';
         helpContent += '<div><strong>clear</strong>     [clear]     | Czyści ekran</div>';
+        helpContent += '<div><strong>fullscreen</strong>[fullscreen]| Przechodzi w tryb pełnoekranowy </div>';
         helpContent += '</pre>';
         return output.write(helpContent, input.join(" "));
     }
@@ -226,8 +230,8 @@ Command.Man = {
         string += '<div>Test składa się z <strong>50</strong> pytań zamkniętych, w których poprawna może być tylko <strong>jedna</strong> odpowiedź.</div>';
         string += '<div>Aby zaliczyć test należy otrzymać wynik <strong>&gt;= 70%</strong> tzn, odpowiedzieć dobrze na conajmniej <strong>35</strong> pytań poprawnie.</div>';
         string += '<div>Po zaliczeniu testu zostanie wygenerowany link umożliwiający przejście do części praktycznej konkursu.</div>';
-		string += '<div><strong>UWAGA!</strong> Po upływie <strong>12 godzin</strong> od wywołania komendy <strong>start</strong> następuje reset,</div>
-		string += '<div>i osiągnięte postępy zostają wyzerowane. Test można powtarzać wielokrotnie, aż do uzyskania poprawnego wyniku.</div>';
+        string += '<div><strong>UWAGA!</strong> Po upływie <strong>12 godzin</strong> od wywołania komendy <strong>start</strong> następuje reset,</div>';
+        string += '<div>i osiągnięte postępy zostają wyzerowane. Test można powtarzać wielokrotnie, aż do uzyskania poprawnego wyniku.</div>';
         string += '<div></div>';
         string += '<div>Powodzenia !</div>';
         string += '</pre>';
@@ -238,6 +242,42 @@ Command.Man = {
 Command.Clear = {
     getFsCallback: function (input, output) {
         return output.clear();
+    }
+};
+
+Command.FullScreen = {
+    getFsCallback: function (input, output) {
+        let elem = document.documentElement
+
+        if (!fullscreen) {
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) {
+                /* Firefox */
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) {
+                /* Chrome, Safari and Opera */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                /* IE/Edge */
+                elem.msRequestFullscreen();
+            }
+            fullscreen = true;
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                /* Firefox */
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                /* Chrome, Safari and Opera */
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                /* IE/Edge */
+                document.msExitFullscreen();
+            }
+            fullscreen = false;
+        }
     }
 };
 
@@ -328,7 +368,10 @@ Command.Start = {
                     let quest = JSON.parse(this.responseText);
                     if (quest.wynik) {
                         output.write("Zakończyłeś test z wynikiem: " + (quest.wynik / 50) * 100 + "%", input.join(" "));
-                        output.simpleWrite("Gratulacje");
+                        output.simpleWrite("Gratulacje!");
+                        output.simpleWrite("Personalny link rejestracyjny do części zadaniowej:")
+                        output.simpleWrite("<a style='color:yellow;' href='" + quest.link + "'>" + quest.link + "</a>")
+
                     } else {
                         output.write("Pytanie nr: " + quest.level, input);
                         output.simpleWrite(quest.question, input);
@@ -365,6 +408,7 @@ Command.Factory = {
         'time': Command.Time,
         'reset': Command.Reset,
         'man': Command.Man,
+        'fullscreen': Command.FullScreen,
         'cd': Command.LinuxCommand,
         'ls': Command.LinuxCommand,
         'rm': Command.LinuxCommand,

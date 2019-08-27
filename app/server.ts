@@ -1,5 +1,5 @@
 import express from "express";
-import { DataBase } from '../database/database';
+import { DataBase } from '../database/databaseController';
 import session from "express-session";
 import MongoStore from 'connect-mongo';
 import { Router } from './router';
@@ -69,7 +69,7 @@ export default class Server {
         this.db = new DataBase();
         this.startServer();
         this.testController = new TestController();
-        this.router = new Router(this.app, this.db.getUser(), this.testController);
+        this.router = new Router(this.app, this.testController, this.db);
 
         // Error Handlers
         this.app.use(function (req, res, next) {

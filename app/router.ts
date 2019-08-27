@@ -1,8 +1,9 @@
-import { User } from './../database/user';
+import { User } from '../database/mongo/user';
 import express from 'express';
 import { AuthController } from './security/authController';
 import { TokenController } from './security/tokenController';
 import { TestController } from '../database/testController';
+import { DataBase } from '../database/databaseController';
 
 
 
@@ -13,17 +14,17 @@ import { TestController } from '../database/testController';
 export class Router {
     private router: express.Router | undefined;
     private api: string;
-    private User: User;
     private AuthController: AuthController;
     private testController: TestController;
+    private db: DataBase;
+    private domain: string = "https://localhost:1234/apictf/"
 
-    constructor(app: express.Application, user: User, pytania: TestController) {
+    constructor(app: express.Application, pytania: TestController, db: DataBase) {
         this.api = "/apims";
         this.router = app;
-        this.User = user;
         this.AuthController = new AuthController();
         this.testController = pytania;
-
+        this.db = db;
         // Root api
         this.router.get(this.api + "/", (req, res, next) => {
             console.log("tp1");
@@ -126,7 +127,6 @@ export class Router {
                     level = 1
                     req!.session!.level = 1;
                 }
-
                 console.log("Level: " + level)
                 if (level == 51) {
                     User.getAnswers(req!.session!.username, (err: Error, ans: Array<boolean>) => {
@@ -134,10 +134,13 @@ export class Router {
                         for (let i: number = 0; i < ans.length; i++) {
                             if (ans[i] === true) wynik += 1;
                         }
-                        let wynikPack = {
-                            wynik: wynik
-                        }
-                        res.send(wynikPack);
+                        this.db.getMySQL().addPassedUser(req!.session!.username, (err: Error, id: string) => {
+                            let wynikPack = {
+                                wynik: wynik,
+                                link: this.domain + id
+                            }
+                            res.send(wynikPack);
+                        })
                     });
                 } else if (level == 1) {
                     User.clearTest(req!.session!.username, (err: Error, user: any) => {
@@ -152,7 +155,6 @@ export class Router {
                         })
 
                     })
-
                 } else {
                     console.log("Odpowiadam");
                     // req!.session!.expired = new Date().getTime + 3 * 60 *
@@ -170,10 +172,13 @@ export class Router {
                     for (let i: number = 0; i < ans.length; i++) {
                         if (ans[i] === true) wynik += 1;
                     }
-                    let wynikPack = {
-                        wynik: wynik
-                    }
-                    res.send(wynikPack);
+                    this.db.getMySQL().addPassedUser(req!.session!.username, (err: Error, id: string) => {
+                        let wynikPack = {
+                            wynik: wynik,
+                            link: this.domain + id
+                        }
+                        res.send(wynikPack);
+                    })
                 });
             }
         });
@@ -206,13 +211,16 @@ export class Router {
                             for (let i: number = 0; i < ans.length; i++) {
                                 if (ans[i] === true) wynik += 1;
                             }
-                            let wynikPack = {
-                                wynik: wynik
-                            }
                             if (wynik / 50 >= 0.7) User.setPassed(req!.session!.username, true, (err: Error, tkn: boolean) => {
                                 req!.session!.tkn = tkn;
                             })
-                            res.send(wynikPack);
+                            this.db.getMySQL().addPassedUser(req!.session!.username, (err: Error, id: string) => {
+                                let wynikPack = {
+                                    wynik: wynik,
+                                    link: this.domain + id
+                                }
+                                res.send(wynikPack);
+                            })
                         });
                     } else {
                         if (this.testController.checkAnswers(level, ans)) {
@@ -259,17 +267,19 @@ export class Router {
                         for (let i: number = 0; i < ans.length; i++) {
                             if (ans[i] === true) wynik += 1;
                         }
-                        let wynikPack = {
-                            wynik: wynik
-                        }
-                        res.send(wynikPack);
+                        this.db.getMySQL().addPassedUser(req!.session!.username, (err: Error, id: string) => {
+                            let wynikPack = {
+                                wynik: wynik,
+                                link: this.domain + id
+                            }
+                            res.send(wynikPack);
+                        })
                     });
                 }
             }
         });
 
         this.router.get(this.api + "/time", this.AuthController.authenticateJWT, (req, res, next) => {
-
             let expiresTime: number = req!.session!.expiresTime
             let now: number = new Date().getTime();
             let div: number = expiresTime - now;
@@ -279,7 +289,6 @@ export class Router {
             let time = {
                 minutesLeft: (div / 60000).toFixed(0),
             }
-
             res.send(time);
         });
 
