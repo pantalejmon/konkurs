@@ -53,7 +53,7 @@ export default class MySQLController {
     }
 
     /**
-     * Getter i setter połączenia z bazą
+     * Getter i setter połączenia z bazą 
      */
     public getConnection(): MySQL.Connection {
         return this.connection;

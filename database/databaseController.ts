@@ -22,7 +22,7 @@ export class DataBase {
     }
 
     /**
-     * Getter
+     * Getter 
      */
     public getMySQL(): MySQLController {
         return this.mysql;
