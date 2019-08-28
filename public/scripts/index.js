@@ -1,3 +1,4 @@
+// Validacja formularza rejestracyjnego
 function validForm() {
     let email = document.getElementById("email");
     let teamname = document.getElementById("email").value;
@@ -25,39 +26,27 @@ function validForm() {
                 return false;
             } else {
                 modal.style.display = "none";
-                alert("jest git");
                 return true;
             }
         } catch {
             return false;
         }
     }
-
 }
 
-
-
-
-
-
-
-/*****************Cookies************************* */
-
-// --- Config --- //
-var purecookieTitle = "Uwaga ciasteczka!"; // Title
-var purecookieDesc = "Biorąc udział w konkursie zgadzasz się na używanie plików cookies"; // Description
-var purecookieLink = '<a href="http://www.dziennikustaw.gov.pl/DU/2012/1445" target="_blank">Więcej informacji</a>'; // Cookiepolicy link
-var purecookieButton = "Zrozumiałem"; // Button text
-// ---        --- //
-
+/*****************Cookies**************************/
+let purecookieTitle = "Uwaga ciasteczka!"; // Title
+let purecookieDesc = "Biorąc udział w konkursie zgadzasz się na używanie plików cookies"; // Description
+let purecookieLink = '<a href="http://www.dziennikustaw.gov.pl/DU/2012/1445" target="_blank">Więcej informacji</a>'; // Cookiepolicy link
+let purecookieButton = "Zrozumiałem"; // Button text
 
 function pureFadeIn(elem, display) {
-    var el = document.getElementById(elem);
+    let el = document.getElementById(elem);
     el.style.opacity = 0;
     el.style.display = display || "block";
 
     (function fade() {
-        var val = parseFloat(el.style.opacity);
+        let val = parseFloat(el.style.opacity);
         if (!((val += .02) > 0.7)) {
             el.style.opacity = val;
             requestAnimationFrame(fade);
@@ -66,7 +55,7 @@ function pureFadeIn(elem, display) {
 };
 
 function pureFadeOut(elem) {
-    var el = document.getElementById(elem);
+    let el = document.getElementById(elem);
     el.style.opacity = 1;
 
     (function fade() {
@@ -79,9 +68,9 @@ function pureFadeOut(elem) {
 };
 
 function setCookie(name, value, days) {
-    var expires = "";
+    let expires = "";
     if (days) {
-        var date = new Date();
+        let date = new Date();
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
@@ -89,10 +78,10 @@ function setCookie(name, value, days) {
 }
 
 function getCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
         while (c.charAt(0) == ' ') c = c.substring(1, c.length);
         if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }

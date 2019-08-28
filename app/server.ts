@@ -16,10 +16,10 @@ import RateLimit from 'express-rate-limit'
  */
 
 export default class Server {
-    public app: express.Application;
-    public db: DataBase;
-    public mongoStore: MongoStore.MongoStoreFactory | undefined;
-    public router: Router;
+    private app: express.Application;
+    private db: DataBase;
+    private mongoStore: MongoStore.MongoStoreFactory | undefined;
+    private router: Router;
     private testController: TestController
     private routingConfig() {
         if (this.app === null) return;
@@ -28,7 +28,11 @@ export default class Server {
         });
     }
 
+    /**
+     * Metoda konfigurująca wstępnie serwer
+     */
     private startServer() {
+        // Podłączenie do bazy sesji i jej inicjalizacja
         this.mongoStore = MongoStore(session)
         this.app.use(session({
             secret: 'work hard',
@@ -42,11 +46,14 @@ export default class Server {
             }),
         }));
 
+        // Ustawienie limitu zapytań do api (300 zapytań na 15 minut)
         const limiter = new RateLimit({
             windowMs: 15 * 60 * 1000, // 15 minutes
-            max: 100,
+            max: 300,
         })
         this.app.use("/apims/", limiter)
+
+        // Konfiguracja serwera
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(express.static("./public", { index: false, extensions: ['html'] }));
@@ -58,11 +65,15 @@ export default class Server {
             res.header("Content-Security-Policy", "script-src 'self'");
             next();
         });
+        // Uruchomienie serwera na porcie 8080
         this.app.listen(8080, function () {
             console.log('Uruchomiono aplikacje ');
         });
     }
 
+    /**
+     * Konstruktor tworzenia serwera
+     */
     constructor() {
         this.app = express();
         this.routingConfig();
@@ -70,11 +81,6 @@ export default class Server {
         this.startServer();
         this.testController = new TestController();
         this.router = new Router(this.app, this.testController, this.db);
-
-        // Error Handlers
-        this.app.use(function (req, res, next) {
-            res.status(404).send("<h1>Pudło, strona nie istnieje</h1>");
-        })
 
         this.app.use(function (req, res, next) {
             res.status(500).send("<h1>Błąd html :(</h1>");

@@ -2,6 +2,9 @@ import MySQL from 'mysql'
 import { User } from '../mongo/user';
 import { DataBase } from '../databaseController';
 
+/**
+ * Klasa służąca do zapisywania do bazy danych MySQL informacji o zaliczonych testach użytkownika
+ */
 
 export default class MySQLController {
     private user: string = "admin";
@@ -11,9 +14,9 @@ export default class MySQLController {
     private tablename: string = "test_passed"
     private connection: MySQL.Connection;
 
-
-
-
+    /**
+     * Konstruktor otwierający połączenie z bazą danych
+     */
     constructor() {
         this.connection = MySQL.createConnection({
             host: this.address,
@@ -28,6 +31,11 @@ export default class MySQLController {
         })
     }
 
+    /**
+     * Metoda dodojąca zaliczonego usera do bazy danych mysql
+     * @param email 
+     * @param callback 
+     */
     public addPassedUser(email: string, callback: any) {
         User.getID(email, (err: Error, id: string) => {
             if (err) throw err;
@@ -44,6 +52,9 @@ export default class MySQLController {
         })
     }
 
+    /**
+     * Getter i setter połączenia z bazą
+     */
     public getConnection(): MySQL.Connection {
         return this.connection;
     }

@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-
+/**
+ * Klasa będąca schematem bazodanowym modelu użytkownika 
+ */
 class UserSchema extends mongoose.Schema {
     constructor() {
         super({
@@ -65,12 +67,19 @@ class UserSchema extends mongoose.Schema {
     }
 }
 
+
+/**
+ * Klasa będąca interfejsem komunikacyjnym z bazą mongo i dokumentem USer
+ */
 export class User {
     private static usr = mongoose.model('User', new UserSchema);
-    constructor() {
 
-    }
-
+    /**
+     * Metoda sprawdzająca poprawność hasła
+     * @param email 
+     * @param pass 
+     * @param callback 
+     */
     static authentication(email: string, pass: string, callback?: any) {
         User.usr.findOne({ email: email })
             .exec(function (err: Error, user: any) {
@@ -80,21 +89,25 @@ export class User {
                     let error: Error = new Error("User not found");
                     return (callback(error));
                 }
-
-
                 bcrypt.compare(pass, user.password, (err: Error, result: any) => {
-
-                    console.log("porownuje bcrypt, status:", result);
                     if (result === true) {
                         console.log("Zalogowano użytkownika: " + email);
                         return callback(null, true, user);
-
                     }
                     else return callback(null, false, null);
                 });
             })
     }
 
+    /**
+     * Metoda tworząca nowego użytkownika w bazie
+     * @param mail 
+     * @param pass 
+     * @param teamname 
+     * @param user1 
+     * @param user2 
+     * @param callback 
+     */
     static createUser(mail: string, pass: string, teamname: string, user1: string, user2: string, callback?: any) {
         let userData = {
             email: mail,
@@ -132,17 +145,32 @@ export class User {
             });
         })
     }
-
+    /**
+     * Metoda usuwająca użytkownika o danym mailu
+     * @param mail 
+     */
     static removeUser(mail: string) {
         User.usr.deleteOne({ email: mail }, (error) => {
             if (error) console.log("failed to delete user: ", mail, "\nError:", error);
         });
     }
 
+    /**
+     * Metoda służąca do zmiany hasła(Niezaimplementowana)
+     * @param mail 
+     * @param oldPass 
+     * @param newPass 
+     * @param callback 
+     */
     static changePassword(mail: string, oldPass: string, newPass: string, callback?: any) {
 
     }
 
+    /**
+     * Metoda sprawdzająca w bazie czy dany user zaliczył test
+     * @param mail 
+     * @param callback 
+     */
     static getPassed(mail: string, callback: any) {
         User.usr.findOne({ email: mail }, (err, user: any) => {
             if (err) {
@@ -153,6 +181,12 @@ export class User {
         })
     }
 
+    /**
+     * Metoda ustawiająca danemu userowi zaliczenie
+     * @param mail 
+     * @param passed 
+     * @param callback 
+     */
     static setPassed(mail: string, passed: boolean, callback: any) {
         User.usr.updateOne({ email: mail }, { $set: { passed: passed } }, (err, user: any) => {
             if (err) {
@@ -167,6 +201,11 @@ export class User {
         })
     }
 
+    /**
+     * Metoda zwracająca tablice odpowiedzi 
+     * @param mail 
+     * @param callback 
+     */
     static getAnswers(mail: string, callback: any) {
         User.usr.findOne({ email: mail }, (err, user: any) => {
             if (err) {
@@ -177,7 +216,13 @@ export class User {
         })
     }
 
-
+    /**
+     * Metoda ustawiająca odpowiedz na dane pytanie
+     * @param mail 
+     * @param level 
+     * @param result 
+     * @param callback 
+     */
     static setAnswer(mail: string, level: number, result: boolean, callback: any) {
         User.usr.findOne({ email: mail }, (err, user: any) => {
             let tab: Array<boolean> = user.answer;
@@ -191,6 +236,11 @@ export class User {
             })
         });
     }
+    /**
+     * Metoda zwracająca jako argument callbacku pytanie na którym znajduje się użytkownik
+     * @param mail 
+     * @param callback 
+     */
     static getLevel(mail: string, callback: any) {
         User.usr.findOne({ email: mail }, (err, user: any) => {
             if (err) {
@@ -205,6 +255,12 @@ export class User {
         })
     }
 
+    /**
+     * Metoda ustawiająca użytkownikowi własciwe pytanie
+     * @param mail 
+     * @param level 
+     * @param callback 
+     */
     static setLevel(mail: string, level: number, callback: any) {
         User.usr.updateOne({ email: mail }, { $set: { level: level } }, (err, user: any) => {
             if (err) {
@@ -214,6 +270,12 @@ export class User {
             else callback(err, user)
         })
     }
+
+    /**
+     * Metoda sprawdzająca ile czasu zostało użytkownikowi na skończenie testu. Zwraca godzine zakończenia w milisekundach
+     * @param mail 
+     * @param callback 
+     */
     static getExpires(mail: string, callback: any) {
         User.usr.findOne({ email: mail }, (err, user: any) => {
             if (err) {
@@ -224,6 +286,11 @@ export class User {
         })
     }
 
+    /**
+     * Metoda sprawdzająca ID użytkownika
+     * @param mail 
+     * @param callback 
+     */
     static getID(mail: string, callback: any) {
         User.usr.findOne({ email: mail }, (err, user: any) => {
             if (err) {
@@ -234,6 +301,11 @@ export class User {
         })
     }
 
+    /**
+     * Metoda sprawdzająca czy dany adres email występuje w bazie danych
+     * @param mail 
+     * @param callback 
+     */
     static checkMailExist(mail: string, callback: any) {
         User.usr.findOne({ email: mail }, (err, user: any) => {
             if (err) throw err;
@@ -242,6 +314,11 @@ export class User {
         })
     }
 
+    /**
+     * Metoda czyszcząca użytkownikowi aktualny wynik testu i generująca nowy czas na wykonanie
+     * @param mail 
+     * @param callback 
+     */
     static clearTest(mail: string, callback: any) {
         User.usr.updateOne({ email: mail }, { $set: { expires: (new Date().getTime() + 720 * 60 * 1000), level: 1 } }, (err, user: any) => {
             if (err) {
@@ -252,7 +329,9 @@ export class User {
         })
     }
 
-
+    /**
+     * Metoda zwracająca uchwyt do bazy danych
+     */
     public static getBase() {
         return User.usr;
     }

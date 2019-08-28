@@ -6,6 +6,12 @@ import { TokenController } from './tokenController';
  * 
  */
 export class AuthController {
+    /**
+     * Metoda uwierzytelniająca token
+     * @param req 
+     * @param res 
+     * @param next 
+     */
     public authenticateJWT(req: Request, res: Response, next: NextFunction) {
         TokenController.checkToken(req, res, next)
     }

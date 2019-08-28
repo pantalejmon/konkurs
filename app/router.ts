@@ -19,6 +19,12 @@ export class Router {
     private db: DataBase;
     private domain: string = "https://localhost:1234/apictf/"
 
+    /**
+     * Konstruktor definiujący konfiguracje routingu api w aplikacji
+     * @param app Referencja to aplikacji Express
+     * @param pytania Referencja do bazy pytań
+     * @param db Referencja do bazy danych
+     */
     constructor(app: express.Application, pytania: TestController, db: DataBase) {
         this.api = "/apims";
         this.router = app;
@@ -109,6 +115,7 @@ export class Router {
             }
         });
 
+        // Sprawdzenie czy dany adres email nie został już wykorzystany
         this.router.post(this.api + "/mailvalidation", (req, res, next) => {
             let email = req.body.email;
             console.log(req.body);
@@ -127,8 +134,8 @@ export class Router {
             res.send(req!.session!.username);
         });
 
+        // Odpowiedz serwera na komende start. Zależnie od ukończnia testu zwraca różne wartości
         this.router.get(this.api + "/start", this.AuthController.authenticateJWT, (req, res, next) => {
-
             console.log("Dostalem start, token:" + req!.session!.tkn);
             let level: number;
             level = req!.session!.level;
@@ -163,7 +170,6 @@ export class Router {
                             req!.session!.expiresTime = exp;
                             res.send(questPack);
                         })
-
                     })
                 } else {
                     console.log("Odpowiadam");
@@ -193,6 +199,7 @@ export class Router {
             }
         });
 
+        //Odpowiedz serwera na przesłaną odpowiedz na pytanie
         this.router.post(this.api + "/answer", this.AuthController.authenticateJWT, (req, res, next) => {
             let ans: string = req.body.answer;
             let level: number = req!.session!.level;
@@ -289,6 +296,7 @@ export class Router {
             }
         });
 
+        // Odpowiedz na zapytanie dotyczące pozostałego czasu do końca sesji rozwiązywania testu
         this.router.get(this.api + "/time", this.AuthController.authenticateJWT, (req, res, next) => {
             let expiresTime: number = req!.session!.expiresTime
             let now: number = new Date().getTime();
@@ -315,7 +323,6 @@ export class Router {
                 }
             })
         });
-
 
         //*******************TESTY*****************/
 

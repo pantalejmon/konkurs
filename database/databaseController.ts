@@ -1,10 +1,15 @@
 import mongoose from "mongoose"
-import { User } from './mongo/user';
 import MySQLController from './mysql/ctfMySQLController';
 
+/**
+ * Klasa kontroler bazy danych
+ */
 export class DataBase {
     public connection: mongoose.Connection;
     private mysql: MySQLController
+    /**
+     * Konstruktor łączący z Mongo i MySQL
+     */
     constructor() {
         mongoose.connect('mongodb://localhost/konkurs', { useNewUrlParser: true });
         this.connection = mongoose.connection;
@@ -16,6 +21,9 @@ export class DataBase {
         this.mysql = new MySQLController();
     }
 
+    /**
+     * Getter
+     */
     public getMySQL(): MySQLController {
         return this.mysql;
     }
