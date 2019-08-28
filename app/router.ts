@@ -4,6 +4,7 @@ import { AuthController } from './security/authController';
 import { TokenController } from './security/tokenController';
 import { TestController } from '../database/testController';
 import { DataBase } from '../database/databaseController';
+import { Config } from './config';
 
 
 
@@ -26,7 +27,7 @@ export class Router {
      * @param db Referencja do bazy danych
      */
     constructor(app: express.Application, pytania: TestController, db: DataBase) {
-        this.api = "/apims";
+        this.api = Config.getApiMS();
         this.router = app;
         this.AuthController = new AuthController();
         this.testController = pytania;

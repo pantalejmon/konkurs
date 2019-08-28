@@ -1,17 +1,14 @@
 import MySQL from 'mysql'
 import { User } from '../mongo/user';
 import { DataBase } from '../databaseController';
+import { Config } from '../../app/config';
 
 /**
  * Klasa służąca do zapisywania do bazy danych MySQL informacji o zaliczonych testach użytkownika
  */
 
 export default class MySQLController {
-    private user: string = "admin";
-    private pass: string = "admin";
-    private schema: string = "konkurs"
-    private address: string = "localhost"
-    private tablename: string = "test_passed"
+
     private connection: MySQL.Connection;
 
     /**
@@ -19,10 +16,10 @@ export default class MySQLController {
      */
     constructor() {
         this.connection = MySQL.createConnection({
-            host: this.address,
-            user: this.user,
-            password: this.pass,
-            database: this.schema
+            host: Config.getMySQLAddress(),
+            user: Config.getMySQLUser(),
+            password: Config.getMySQLPass(),
+            database: Config.getMySQLSchema()
         })
 
         this.connection.connect((err) => {
@@ -40,7 +37,7 @@ export default class MySQLController {
         User.getID(email, (err: Error, id: string) => {
             if (err) throw err;
             else {
-                let sql: string = "INSERT IGNORE INTO " + this.tablename + "(email, uuid) VALUES ('" + email + "','" + id + "')";
+                let sql: string = "INSERT IGNORE INTO " + Config.getMySQLTablename() + "(email, uuid) VALUES ('" + email + "','" + id + "')";
                 this.connection.query(sql, (err, result) => {
                     if (err) throw err;
                     else {

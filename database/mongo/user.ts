@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { Config } from '../../app/config';
 
 /**
  * Klasa będąca schematem bazodanowym modelu użytkownika 
@@ -320,7 +321,7 @@ export class User {
      * @param callback 
      */
     static clearTest(mail: string, callback: any) {
-        User.usr.updateOne({ email: mail }, { $set: { expires: (new Date().getTime() + 720 * 60 * 1000), level: 1 } }, (err, user: any) => {
+        User.usr.updateOne({ email: mail }, { $set: { expires: (new Date().getTime() + Config.getTestDuration()), level: 1 } }, (err, user: any) => {
             if (err) {
                 console.log(err);
                 callback(err, null);

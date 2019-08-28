@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import MySQLController from './mysql/ctfMySQLController';
+import { Config } from '../app/config';
 
 /**
  * Klasa kontroler bazy danych
@@ -11,7 +12,8 @@ export class DataBase {
      * Konstruktor łączący z Mongo i MySQL
      */
     constructor() {
-        mongoose.connect('mongodb://localhost/konkurs', { useNewUrlParser: true });
+        mongoose.connect(Config.getMongoAddress(), { useNewUrlParser: true });
+        mongoose.set('useCreateIndex', true);
         this.connection = mongoose.connection;
         this.connection.on('error', console.error.bind(console, 'connection error:'));
         this.connection.once('open', () => {

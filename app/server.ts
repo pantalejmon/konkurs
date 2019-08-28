@@ -6,6 +6,7 @@ import { Router } from './router';
 import bodyParser from "body-parser"
 import { TestController } from '../database/testController';
 import RateLimit from 'express-rate-limit'
+import { Config } from './config';
 
 
 
@@ -48,8 +49,8 @@ export default class Server {
 
         // Ustawienie limitu zapytań do api (300 zapytań na 15 minut)
         const limiter = new RateLimit({
-            windowMs: 15 * 60 * 1000, // 15 minutes
-            max: 300,
+            windowMs: Config.getRateLimitTime(), // 15 minutes
+            max: Config.getRateLimitMax(),
         })
         this.app.use("/apims/", limiter)
 

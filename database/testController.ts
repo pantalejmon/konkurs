@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { Config } from '../app/config';
 /**
  * Plik posiadający odpowiednie narzędzia do zarządzania pytaniami
  */
@@ -33,7 +34,7 @@ export class TestController {
      * Konstruktor wczytujący baze pytań z pliku json
      */
     constructor() {
-        const test: any = fs.readFileSync("./pytania.json");
+        const test: any = fs.readFileSync(Config.getTestSource());
         this.bazaPytan = JSON.parse(test.toString().trim());
         console.log("Wczytano baze pytan o numerze: ", this.bazaPytan.wersja_bazy_pytan);
         console.log("Data wydania bazy pytan: ", this.bazaPytan.data_aktualizacji);
