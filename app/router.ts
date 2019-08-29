@@ -152,13 +152,24 @@ export class Router {
                         for (let i: number = 0; i < ans.length; i++) {
                             if (ans[i] === true) wynik += 1;
                         }
-                        this.db.getMySQL().addPassedUser(req!.session!.username, (err: Error, id: string) => {
+                        if (wynik / 50 >= 0.7) User.setPassed(req!.session!.username, true, (err: Error, tkn: boolean) => {
+                            req!.session!.tkn = tkn;
+
+                            this.db.getMySQL().addPassedUser(req!.session!.username, (err: Error, id: string) => {
+                                let wynikPack = {
+                                    wynik: wynik,
+                                    link: this.domain + id
+                                }
+                                res.send(wynikPack);
+                            })
+                        })
+                        else {
                             let wynikPack = {
                                 wynik: wynik,
-                                link: this.domain + id
+                                link: "Nie dostaniesz linku jak nie zdales"
                             }
                             res.send(wynikPack);
-                        })
+                        }
                     });
                 } else if (level == 1) {
                     User.clearTest(req!.session!.username, (err: Error, user: any) => {

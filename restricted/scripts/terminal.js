@@ -165,12 +165,18 @@ Command.Answer = {
                 try {
                     let quest = JSON.parse(this.responseText);
                     if (quest.wynik) {
-                        output.write("Zakończyłeś test z wynikiem: " + (quest.wynik / 50) * 100 + "%", input.join(" "));
-                        output.simpleWrite("Gratulacje");
-                        output.simpleWrite("Personalny link rejestracyjny do części zadaniowej:")
-                        output.simpleWrite("<a style='color:yellow;' href='" + quest.link + "'>" + quest.link + "</a>")
+                        output.write("Zakończyłeś test z wynikiem: " + (quest.wynik * 2) + "%", input.join(" "));
+
+                        if (quest.link[0] != 'h') {
+                            output.simpleWrite("Gratulacje!");
+                            output.simpleWrite("Personalny link rejestracyjny do części zadaniowej:")
+                            output.simpleWrite("<a style='color:yellow;' href='" + quest.link + "'>" + quest.link + "</a>")
+                        } else {
+                            output.simpleWrite("Spróbuj ponownie");
+                        }
                     } else {
                         output.write("Przesłano odpowiedź, następne pytanie:", input.join(" "));
+                        output.simpleWrite("Pytanie nr: " + quest.level, input);
                         output.simpleWrite(quest.question);
                         answers.a = quest.answer[0];
                         answers.b = quest.answer[1];
