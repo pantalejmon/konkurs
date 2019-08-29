@@ -321,7 +321,13 @@ export class User {
      * @param callback 
      */
     static clearTest(mail: string, callback: any) {
-        User.usr.updateOne({ email: mail }, { $set: { expires: (new Date().getTime() + Config.getTestDuration()), level: 1 } }, (err, user: any) => {
+        let ans: Array<boolean> = new Array();
+        let i: number = 0;
+        while (i < 50) {
+            let b: boolean = false;
+            i = ans.push(b);
+        }
+        User.usr.updateOne({ email: mail }, { $set: { expires: (new Date().getTime() + Config.getTestDuration()), level: 1, answer: ans } }, (err, user: any) => {
             if (err) {
                 console.log(err);
                 callback(err, null);

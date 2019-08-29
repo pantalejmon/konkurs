@@ -231,14 +231,22 @@ export class Router {
                             }
                             if (wynik / 50 >= 0.7) User.setPassed(req!.session!.username, true, (err: Error, tkn: boolean) => {
                                 req!.session!.tkn = tkn;
+
+                                this.db.getMySQL().addPassedUser(req!.session!.username, (err: Error, id: string) => {
+                                    let wynikPack = {
+                                        wynik: wynik,
+                                        link: this.domain + id
+                                    }
+                                    res.send(wynikPack);
+                                })
                             })
-                            this.db.getMySQL().addPassedUser(req!.session!.username, (err: Error, id: string) => {
+                            else {
                                 let wynikPack = {
                                     wynik: wynik,
-                                    link: this.domain + id
+                                    link: "Nie dostaniesz linku jak nie zdales"
                                 }
                                 res.send(wynikPack);
-                            })
+                            }
                         });
                     } else {
                         if (this.testController.checkAnswers(level, ans)) {

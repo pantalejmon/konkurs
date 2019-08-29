@@ -1,0 +1,152 @@
+import { User } from "../database/mongo/user";
+
+
+
+interface terminal {
+    input: NodeJS.ReadStream,
+    output: NodeJS.WriteStream
+}
+
+export class AdminTerminal implements terminal {
+    input: NodeJS.ReadStream = process.stdin;
+    output: NodeJS.WriteStream = process.stdout;
+
+
+
+    constructor() {
+        this.printYellow("Uruchomiono terminal \n");
+        setTimeout(() => this.printYellow("Terminal konkursowy> "), 5000);
+        this.input.on('data', (data: Buffer) => {
+            //console.log(data.toString());
+            //("\x1b[32m%s\x1b[0m", "Podaj haslo do zalogowania: ");
+
+            this.recognizeData(data.toString());
+            this.printYellow("Terminal konkursowy> ")
+        });
+    }
+
+    private recognizeData(data: string) {
+        data = data.replace("\r", "");
+        data = data.replace("\n", "");
+        data = data.toLowerCase();
+        let inputTable: Array<string> = data.split(" ");
+
+        switch (inputTable[0]) {
+            case "hello":
+                this.output.write("Witaj ziomus\n");
+                break;
+            case "user":
+                this.user(inputTable);
+                break;
+            case "help":
+                this.printHelp("");
+                break;
+            default:
+                this.printRed("Nieznana komenda, w celu poznania możliwych komend wpisz help\n");
+                break;
+        }
+    }
+
+
+    private user(input: Array<string>) {
+        if (input[0] != "user") return;
+        console.log("Dostalem user")
+        switch (input[1]) {
+            case "list":
+                this.listUser(input[2]);
+                break;
+            case "valid":
+                break;
+            default:
+                this.printHelp("user");
+        }
+    }
+
+    private listUser(arg: string) {
+
+        console.log("Dostalem user list")
+        switch (arg) {
+            case "-p":
+                this.printPassed();
+                break;
+            case "-a":
+                this.printActive();
+            default:
+                this.printAll();
+        }
+    }
+
+    private printPassed() {
+
+    }
+
+    private printActive() {
+
+    }
+
+
+    private printAll() {
+        User.getBase().find({}, (err, users) => {
+            console.log("\nLista zarejestrowanych użytkowników w bazie: ")
+            let usr: any
+            for (usr of users) {
+                if (usr.valid == false) {
+                    this.printRed(usr.email + "\n");
+                } else {
+                    if (usr.passed == true) {
+                        this.printGreen(usr.email + "\n");
+                    }
+                    else {
+                        this.printBlue(usr.email + "\n");
+                    }
+                }
+            }
+
+            this.printYellow("Terminal konkursowy> ")
+        })
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private printHelp(cmd: string) {
+
+    }
+
+
+
+    /******************Obsługa kolorowego tekstu********************************* */
+    private printBlue(text: string) {
+        this.output.write("\x1b[94m" + text + "\x1b[0m");  //cyan
+    }
+    private printYellow(text: string) {
+        this.output.write("\x1b[93m" + text + "\x1b[0m");  //cyan
+    }
+    private printGreen(text: string) {
+        this.output.write("\x1b[92m" + text + "\x1b[0m");  //cyan
+    }
+
+    private printRed(text: string) {
+        this.output.write("\x1b[91m" + text + "\x1b[0m");  //red
+    }
+}

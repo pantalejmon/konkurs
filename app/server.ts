@@ -7,6 +7,7 @@ import bodyParser from "body-parser"
 import { TestController } from '../database/testController';
 import RateLimit from 'express-rate-limit'
 import { Config } from './config';
+import { AdminTerminal } from './adminTerminal';
 
 
 
@@ -22,6 +23,7 @@ export default class Server {
     private mongoStore: MongoStore.MongoStoreFactory | undefined;
     private router: Router;
     private testController: TestController
+    private cmd: AdminTerminal;
     private routingConfig() {
         if (this.app === null) return;
         this.app.get('/test', function (req, res) {
@@ -72,6 +74,7 @@ export default class Server {
         });
     }
 
+
     /**
      * Konstruktor tworzenia serwera
      */
@@ -82,7 +85,7 @@ export default class Server {
         this.startServer();
         this.testController = new TestController();
         this.router = new Router(this.app, this.testController, this.db);
-
+        this.cmd = new AdminTerminal();
         this.app.use(function (req, res, next) {
             res.status(500).send("<h1>Błąd html :(</h1>");
         })
