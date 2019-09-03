@@ -107,7 +107,7 @@ export class Router {
             if (!email || !pass || !teamname || !user1 || !user2) {
                 res.redirect("/wrondgregistration.html");
             } else {
-                User.createUser(email, pass, teamname, user1, user2, (err: Error, user: any) => {
+                User.createUser(email.toLocaleLowerCase(), pass, teamname, user1, user2, (err: Error, user: any) => {
                     if (err) {
                         console.log("cos nie wyszlo" + err);
                     }

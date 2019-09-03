@@ -50,12 +50,12 @@ export class AdminTerminal implements terminal {
 
     private user(input: Array<string>) {
         if (input[0] != "user") return;
-        console.log("Dostalem user")
         switch (input[1]) {
             case "list":
                 this.listUser(input[2]);
                 break;
             case "valid":
+                this.validUser(input[2]);
                 break;
             default:
                 this.printHelp("user");
@@ -63,7 +63,6 @@ export class AdminTerminal implements terminal {
     }
 
     private listUser(arg: string) {
-
         console.log("Dostalem user list")
         switch (arg) {
             case "-p":
@@ -76,11 +75,32 @@ export class AdminTerminal implements terminal {
         }
     }
 
+    private validUser(email: string) {
+        User.getBase().updateOne({ email: email }, { $set: { valid: true } }, (err, user: any) => {
+            if (err) throw err;
+            else console.log("Poprawnie dodano walidacje userowi: " + email);
+        });
+    }
     private printPassed() {
-
+        User.getBase().find({ valid: true }, (err, users) => {
+            console.log("\nLista użytkowników którzy zaliczyli test: ");
+            let usr: any
+            for (usr of users) {
+                this.printGreen(usr.email + "\n");
+            }
+            this.printYellow("Terminal konkursowy> ")
+        })
     }
 
     private printActive() {
+        User.getBase().find({ valid: true }, (err, users) => {
+            console.log("\nLista aktywnych użytkowników w bazie: ")
+            let usr: any
+            for (usr of users) {
+                this.printBlue(usr.email + "\n");
+            }
+            this.printYellow("Terminal konkursowy> ")
+        })
 
     }
 
