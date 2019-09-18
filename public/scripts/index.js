@@ -1,4 +1,11 @@
 // Validacja formularza rejestracyjnego
+
+document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
+});
+
+
 function validForm() {
     let email = document.getElementById("email");
     let teamname = document.getElementById("email").value;
@@ -106,4 +113,5 @@ function purecookieDismiss() {
 
 window.onload = function () {
     cookieConsent();
+
 };

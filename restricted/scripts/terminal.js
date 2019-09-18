@@ -209,15 +209,15 @@ Command.Help = {
     getFsCallback: function (input, output) {
         var helpContent = "";
         helpContent += '<pre>';
-        helpContent += '<div><strong>man</strong>       [man]       | Instrukcja działania aplikacji </div>';
-        helpContent += '<div><strong>start</strong>     [start]     | Rozpoczęcie testu od ostatniego pytania </div>';
-        helpContent += '<div><strong>show</strong>      [start]     | Wyświetlenie aktualnego pytania </div>';
-        helpContent += '<div><strong>reset</strong>     [reset]     | Restart testu (Tylko jeśli test jest w trakcie i nie został zaliczony) </div>';
-        helpContent += '<div><strong>time</strong>      [time]      | Wyświetla czas do końca testu w minutach </div>';
-        helpContent += '<div><strong>answer</strong>    [answer n]  | Podanie odpowiedzi na pytanie (Gdzie n jest odpowiedzią) </div>';
-        helpContent += '<div><strong>logout</strong>    [logout]    | Wylogowanie się z serwera </div>';
-        helpContent += '<div><strong>clear</strong>     [clear]     | Czyści ekran</div>';
-        helpContent += '<div><strong>fullscreen</strong>[fullscreen]| Przechodzi w tryb pełnoekranowy </div>';
+        helpContent += '<div><strong>man</strong>           [man]           | Instrukcja działania aplikacji </div>';
+        helpContent += '<div><strong>start</strong>         [start]         | Rozpoczęcie testu od ostatniego pytania </div>';
+        helpContent += '<div><strong>show</strong>          [show]          | Wyświetlenie aktualnego pytania </div>';
+        helpContent += '<div><strong>reset</strong>         [reset]         | Restart testu (Tylko jeśli test jest w trakcie i nie został zaliczony) </div>';
+        helpContent += '<div><strong>time</strong>          [time]          | Wyświetla czas do końca testu w minutach </div>';
+        helpContent += '<div><strong>answer</strong>        [answer n]      | Podanie odpowiedzi na pytanie (Gdzie n jest odpowiedzią) </div>';
+        helpContent += '<div><strong>logout</strong>        [logout]        | Wylogowanie się z serwera </div>';
+        helpContent += '<div><strong>clear</strong>         [clear]         | Czyści ekran</div>';
+        helpContent += '<div><strong>fullscreen</strong>    [fullscreen]    | Przechodzi w tryb pełnoekranowy </div>';
         helpContent += '</pre>';
         return output.write(helpContent, input.join(" "));
     }
@@ -254,6 +254,11 @@ Command.Clear = {
 Command.FullScreen = {
     getFsCallback: function (input, output) {
         let elem = document.documentElement
+        if ((screen.availHeight || screen.height - 30) <= window.innerHeight) {
+            fullscreen = true;
+        } else {
+            fullscreen = false;
+        }
 
         if (!fullscreen) {
             if (elem.requestFullscreen) {
@@ -284,6 +289,7 @@ Command.FullScreen = {
             }
             fullscreen = false;
         }
+        return output.write("", input.join(" "));
     }
 };
 

@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="scripts/index.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000" />
+    <link rel="manifest" href="/manifest.json">
 </head>
 
 <body>
@@ -16,56 +18,77 @@
             <div id="loader"></div>
         </div>
     </div>
-    <form name='form-login' method="POST" onsubmit="return validForm()" action="/apims/register">
-        <div class="imgcontainer">
-            <img src="data/logos.png" alt="logo" align="mid" img style='height: 100%; width: 100%; object-fit: contain'>
-        </div>
-        <h2 align="center">rejestracja</h2>
-        <div class="container">
-            <p align="justify">
-                Witaj na stronie rejestracyjnej konkursu 'Capture The Flag: Konkurs bezpieczeństwa internetowego'. Aby
-                pomyślnie zarejestrować drużynę, wypełnij formularz zgłoszeniowy.</p>
+    <div class="mainCard">
+        <form name='form-login' method="POST" onsubmit="return validForm()" action="/apims/register">
 
-            <p align="justify"> O aktywowaniu twojego konta zostaniesz powiadomiony mailowo. Dostęp do części testowej
-                konkursu zostanie przyznany wszystkim aktywnym drużynom w dniu rozpoczęcia pierwszego etapu.</p>
+            <h2 align="center">Rejestracja</h2>
+            <div class="container">
+                <p align="justify">
+                    Witaj na stronie rejestracyjnej konkursu 'Capture The Flag: Konkurs bezpieczeństwa internetowego'.
+                    Aby
+                    pomyślnie zarejestrować drużynę, wypełnij formularz zgłoszeniowy.</p>
 
-            <p align="justify">Regulamin konkursu jest dostępny na <a href="adres regulaminu">tej</a> stronie. </p>
+                <p align="justify"> O aktywowaniu twojego konta zostaniesz powiadomiony mailowo. Dostęp do części
+                    testowej
+                    konkursu zostanie przyznany wszystkim aktywnym drużynom w dniu rozpoczęcia pierwszego etapu.</p>
+
+                <p align="justify">Regulamin konkursu jest dostępny na <a href="adres regulaminu">tej</a> stronie. </p>
 
 
 
-        </div>
-
-        <div class="container">
-            <div class='form_frame'>
-                <label for="email"><b>E-mail</b></label>
-                <input id="email" type="email" placeholder="Wprowadź zgłoszony przez nauczyciela adres e-mail"
-                    name="email">
-
-                <label for="team"><b>Nazwa drużyny</b></label>
-                <input id="teamname" type="text" placeholder="Wprowadź zgłoszoną przez nauczyciela nazwę drużyny"
-                    name="teamname" required>
-
-                <label for="password"><b>Hasło</b></label>
-                <input id="pass" type="password" placeholder="Wprowadź hasło logowania" name="pass" required>
-
-                <label for="name1"><b>Imię i nazwisko pierwszego zawodnika</b></label>
-                <input id="user1" name="user1" type="text" placeholder="Imię i nazwisko pierwszego zawodnika"
-                    name="user1">
-
-                <label for="name2"><b>Imię i nazwisko drugiego zawodnika</b></label>
-                <input id="user2" type="text" placeholder="Imię i nazwisko drugiego zawodnika" name="user2">
-
-                <button type="submit">Zarejestruj</button>
             </div>
-        </div>
-        <div class="container" style="background-color:#f1f1f1">
-            <span class="psw"><a href="/index.html"> Powrót do strony logowania</a></span>
-        </div>
-        <div class="container" style="background-color:#f1f1f1">
-            <span class="psw"><a href="mailto: mail konkursowy"> Potrzebujesz pomocy? Skontaktuj się z
-                    administratorami.</a></span>
-        </div>
-    </form>
+
+
+            <div class="container">
+                <div class="loginCard">
+
+                    <div class="group">
+                        <h2>Formularz rejestracji</h2>
+                    </div>
+                    <div class="group">
+                        <input type="email" id="email" name="email" required>
+                        <span class="bar"></span>
+                        <label>Wprowadź zgłoszony przez nauczyciela adres e-mail</label>
+                    </div>
+
+                    <div class="group">
+                        <input type="text" id="teamname" name="teamname" required>
+                        <span class="bar"></span>
+                        <label>Wprowadź zgłoszoną przez nauczyciela nazwę drużyny</label>
+                    </div>
+                    <div class="group">
+                        <input type="password" id="pass" name="pass" required>
+                        <span class="bar"></span>
+                        <label>Wprowadź hasło logowania</label>
+                    </div>
+                    <div class="group">
+                        <input type="text" name="user1" id="user1" required>
+                        <span class="bar"></span>
+                        <label>Imię i nazwisko pierwszego zawodnika</label>
+                    </div>
+
+                    <div class="group">
+                        <input id="user2" type="text" name="user2" required>
+                        <span class="bar"></span>
+                        <label>Imię i nazwisko drugiego zawodnika</label>
+                    </div>
+
+
+                    <button type="submit">Zarejestruj</button>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="loginCard">
+                    <a class="btn " href="/login.html" title="Powrót do strony logowania"> Logowanie</a>
+
+
+                    <a class="btn " href=" mailto: mail konkursowy" title="Potrzebujesz pomocy? Skontaktuj się z
+                    administratorami."> Pomoc </a>
+                </div>
+            </div>
+        </form>
+    </div>
 
 </body>
 

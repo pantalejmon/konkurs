@@ -1,21 +1,28 @@
 .mainCard {
-    background: rgba(240, 240, 240);
+    background: white;
     margin-left: auto;
     margin-right: auto;
     margin-top: 30px;
-    margin-bottom: auto;
+    margin-bottom: 30px;
     margin-right: auto;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 80%;
-    height: 500px;
+    width: 650px;
+    padding: 30px;
     display: table;
     flex-direction: column;
     clear: both;
     position: relative;
 }
-
+header {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #FFF;
+    margin-top: 0px;
+    box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.1);
+}
 .loginCard {
-    background: rgba(240, 240, 240);
+    background: white;
     padding: 30px;
     margin-left: auto;
     margin-right: auto;
@@ -23,8 +30,7 @@
     margin-bottom: auto;
     margin-right: auto;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 300px;
-    height: 260px;
+    width: 90%;
     display: table;
     flex-direction: column;
     clear: both;
@@ -57,33 +63,11 @@ p {
 }
 
 
-.forminput {
-    background-color: white;
-    border-radius: 5px 5px 5px 5px;
-    color: #a9a9a9;
-    margin: auto;
-    width: 80%;
-    margin-bottom: 1em;
-    height: 50px;
-    right: 10px;
-    left: 10px;
-    text-align: center;
-}
 
 
 
-.inputsubmit {
-    background: #b5cd60;
-    border: 0;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    height: 40px;
-    border-radius: 3px;
-    color: white;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-}
+
+
 
 .inputsubmit:hover {
     background: #16aa56;
@@ -94,36 +78,197 @@ body {
 }
 
 form {
-    border: 3px solid #f1f1f1;
-    width: 500px;
+    
     margin: 0 auto;
 }
 
-input[type=email],
+/* input[type=email],
 input[type=password],
-input[type=team],
-input[type=school],
-input[type=text],
-input[type=name2] {
+input[type=text] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 5px #444, 1px 1px 0 #ffc5a6;
+    
 }
+
+input[type=email]:focus,
+input[type=password]:focus ,
+input[type=text]:focus {
+    border: 1px solid blue;
+    background-color: #aedfff;
+    outline: none !important;
+  } */
+
+  .group 			  { 
+    position:relative; 
+    margin:auto;
+    margin-bottom:30px; 
+    width: 90%;
+    /* border: 1px solid #757575; */
+    padding: 1px;
+    
+  }
+  input 				{
+    font-size:14px;
+    padding:10px 10px 10px 0px;
+    display:block;
+    width:80%;
+    margin: auto;
+    border: none;
+    border-bottom:1px solid #757575;
+    
+  }
+  input:focus 		{ outline:none; }
+  
+  /* LABEL ======================================= */
+  label 				 {
+    color:#999; 
+    font-size:16px;
+    font-weight:normal;
+    position:absolute;
+    pointer-events:none;
+    left:55px;
+    top:10px;
+    transition:0.2s ease all; 
+    -moz-transition:0.2s ease all; 
+    -webkit-transition:0.2s ease all;
+  }
+  
+  /* active state */
+  input:focus ~ label, input:valid ~ label 		{
+    top:-20px;
+    font-size:14px;
+    border:none;
+    color:#5264AE;
+  }
+  
+  /* BOTTOM BARS ================================= */
+  .bar 	{ 
+    position:relative;
+     display:block; 
+     width:41%; 
+     margin: auto;
+    }
+  .bar:before, .bar:after 	{
+    content:'';
+    height:2px; 
+    width:0px;
+    bottom:1px; 
+    position:absolute;
+    background:#5264AE; 
+    transition:0.2s ease all; 
+    -moz-transition:0.2s ease all; 
+    -webkit-transition:0.2s ease all;
+  }
+  .bar:before {
+    left:50%;
+  }
+  .bar:after {
+    right:50%; 
+  }
+  
+  /* active state */
+  input:focus ~ .bar:before, input:focus ~ .bar:after {
+    width:100%; 
+  }
+
+  input:focus {
+    border:none;
+  }
+  
+  /* ANIMATIONS ================ */
+  @-webkit-keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+  @-moz-keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+  @keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
 
 button {
-    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.8);
     color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
+    width:100%;
+    height: 40px;
     border: none;
     cursor: pointer;
-    width: 100%;
+    text-decoration: none;
+    border-radius: 2px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.btn {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 20px ;
+    margin: 8px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 2px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.btn:hover {
+    background-color: gray;
+   
+}
+
+
+
+
 button:hover {
+    opacity: 0.8;
+}
+
+
+.linkButton {
+    background-color: #a0a0a0;
+    color: white;
+    padding: 5px 14px;
+    width: calc(100% - 28px);
+    border: none;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 20px;
+    margin-top: 2px;
+    
+}
+html, body {
+    padding: 0;
+    margin: 0;
+}
+footer {
+
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: gray;
+    color: white;
+    height: 50px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  .footerContent {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+    text-align: center;
+    
+  }
+
+.linkButton:hover {
     opacity: 0.8;
 }
 
@@ -133,7 +278,8 @@ button:hover {
 }
 
 .container {
-    padding: 16px;
+    padding: 15px;
+    /* border: 1px solid #757575; */
 }
 
 .form_frame {
@@ -143,28 +289,74 @@ button:hover {
     width: 90%;
 }
 
-span.psw {
-    float: auto;
-    padding-top: 16px;
-}
-
 /* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-    span.psw {
-        display: block;
-        float: none;
-    }
 
-    .cancelbtn {
-        width: 100%;
+header, main, footer {
+    padding-left: 300px;
+  }
+
+  @media only screen and (max-width : 992px) {
+    header, main, footer{
+      padding-left: 0;
     }
+  }
+  html, body { height: 100%; }
+@media screen and (max-width: 750px) { 
+   
+    .loginCard {
+        background: white;
+        padding: 30px 5px;
+    
+    }
+    .containerx {
+        padding: 0px;
+        /* border: 1px solid #757575;  */
+        width:100%
+    }
+    .group 			  { 
+
+        width: 90%;
+        /* border: 1px solid #757575; */
+        padding: 1px;
+        
+      }
+      input 				{
+       
+        width:100%;
+       
+        
+      }
+      label 				 {
+        font-size:12px;
+        left:10px;
+       
+      }
+
+      input:focus ~ label, input:valid ~ label 		{
+        top:-10px;
+        font-size:10px;
+        border:none;
+        color:#5264AE;
+      }
+      .bar 	{ 
+        position:relative;
+         display:block; 
+         width:50%; 
+         margin: auto;
+        }
+
+        .mainCard {
+            padding: 30px 10px;
+            width: 90%
+        }
 }
+
+
+    
 
 ::selection {
     background: #ff5e99;
 }
-
-
 
 .cookieConsentContainer {
     z-index: 999;

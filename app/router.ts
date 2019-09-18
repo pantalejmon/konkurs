@@ -69,8 +69,7 @@ export class Router {
                                 if (exp - new Date().getTime() < 0) {
                                     req!.session!.level = 1;
                                     res.redirect("/user/terminal");
-                                }
-                                else {
+                                } else {
                                     User.getLevel(email, (err: Error, level: number) => {
                                         if (err) console.log("Get level error:" + err);
                                         req!.session!.level = level;
@@ -81,12 +80,10 @@ export class Router {
                             })
                         }
                     })
-                }
-                else {
+                } else {
                     res.redirect("/wronglogin.html");
                 }
             });
-
         });
 
         // Wylogowanie
@@ -154,7 +151,6 @@ export class Router {
                         }
                         if (wynik / 50 >= 0.7) User.setPassed(req!.session!.username, true, (err: Error, tkn: boolean) => {
                             req!.session!.tkn = tkn;
-
                             this.db.getMySQL().addPassedUser(req!.session!.username, (err: Error, id: string) => {
                                 let wynikPack = {
                                     wynik: wynik,
@@ -162,7 +158,7 @@ export class Router {
                                 }
                                 res.send(wynikPack);
                             })
-                        })
+                        });
                         else {
                             let wynikPack = {
                                 wynik: wynik,
