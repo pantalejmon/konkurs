@@ -40,7 +40,23 @@ export class Router {
 
 
         //*******************API ZWIĄZANE Z LOGOWANIEM I REJESTRACJĄ*****************/
-
+        this.router.post(this.api + "/logincheck", (req, res, next) => {
+            let email: string = req.body.email;
+            let pass: string = req.body.pass;
+            User.authentication(email, pass, (err: any, status: boolean, user: any) => {
+                if (err) {
+                    console.log(err);
+                }
+                let zmienna = {
+                    status: false
+                }
+                if (status) zmienna.status = true;
+                else zmienna.status = false;
+                console.log(req.body.pass);
+                console.log("status to:" + status)
+                res.send(zmienna);
+            });
+        });
         // Logowanie
         this.router.post(this.api + "/login", (req, res, next) => {
             let email: string = req.body.email;
