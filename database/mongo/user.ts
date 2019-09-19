@@ -157,13 +157,29 @@ export class User {
     }
 
     /**
-     * Metoda służąca do zmiany hasła(Niezaimplementowana)
+     * Metoda służąca do zmiany hasła(Zaimplementowana)
      * @param mail 
-     * @param oldPass 
      * @param newPass 
      * @param callback 
      */
-    static changePassword(mail: string, oldPass: string, newPass: string, callback?: any) {
+    static changePassword(mail: string, newPass: string, callback?: any) {
+
+        bcrypt.hash(newPass, 10, (err, hash) => {
+            if (err) {
+                console.log(err);
+                callback(err);
+            }
+            User.usr.updateOne({ email: mail }, { $set: { password: hash } }, (err, user: any) => {
+                if (err) {
+                    console.log(err);
+                    callback(err, null);
+                }
+                else {
+                    callback(err, hash);
+                }
+            })
+        })
+
 
     }
 

@@ -57,11 +57,20 @@ export class AdminTerminal implements terminal {
             case "valid":
                 this.validUser(input[2]);
                 break;
+            case "pass":
+                this.passwordChange(input[3], input[2]);
+
             default:
                 this.printHelp("user");
         }
     }
 
+    private passwordChange(newPass: string, user: string) {
+        User.changePassword(user, newPass, (err: any, hash: any) => {
+            if (err) throw err;
+            else console.log("Pomyslnie zmienione hasło");
+        })
+    }
     private listUser(arg: string) {
         console.log("Dostalem user list")
         switch (arg) {
