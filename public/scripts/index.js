@@ -1,11 +1,21 @@
-// Validacja formularza rejestracyjnego
 
+// Uatrakcyjnienie interfejsu
 document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems);
 });
 
+function change(str) {
+    console.log("Zmiana na " + str);
+    const allLi = document.getElementsByTagName("li");
+    console.log(allLi);
+    for (let t of allLi) {
+        t.classList.remove("active");
+    }
+    document.getElementById(str).classList.add("active");
+}
 
+// Validacja formularza rejestracyjnego
 function validForm() {
     let email = document.getElementById("email");
     let teamname = document.getElementById("email").value;

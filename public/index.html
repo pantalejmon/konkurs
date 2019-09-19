@@ -46,10 +46,14 @@
         <li>
             <div class="divider"></div>
         </li>
-        <li class="active"><a href="info.html" target="iframe_a" class="waves-effect"> Informacje</a></li>
-        <li><a href="login.html" target="iframe_a" class="waves-effect"> Logowanie</a></li>
-        <li><a href="process.html" target="iframe_a" class="waves-effect"> Przebieg konkursu</a></li>
-        <li><a href="contact.html" target="iframe_a" class="waves-effect"> Kontakt</a></li>
+        <li id="info" class="active"><a href="info.html" target="iframe_a" class="waves-effect"
+                onclick="change('info');"> Informacje</a></li>
+        <li id="login"><a href="login.html" target="iframe_a" class="waves-effect" onclick="change('login');">
+                Logowanie</a></li>
+        <li id="process"><a href="process.html" target="iframe_a" class="waves-effect" onclick="change('process');">
+                Przebieg konkursu</a></li>
+        <li id="contact"><a href="contact.html" target="iframe_a" class="waves-effect" onclick="change('contact');">
+                Kontakt</a></li>
     </ul>
     <main style=" height: Calc(100% - 118px);">
         <iframe src="info.html" name="iframe_a" frameborder="0"
