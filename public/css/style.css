@@ -138,81 +138,14 @@ input[type=text]:focus {
   }
   input:focus 		{ outline:none; }
   
-  /* LABEL ======================================= */
-  label 				 {
-    color:#999; 
-    font-size:16px;
-    font-weight:normal;
-    position:absolute;
-    pointer-events:none;
-    left:55px;
-    top:10px;
-    transition:0.2s ease all; 
-    -moz-transition:0.2s ease all; 
-    -webkit-transition:0.2s ease all;
-  }
   
-  /* active state */
-  input:focus ~ label, input:valid ~ label 		{
-    top:-20px;
-    font-size:14px;
-    border:none;
-    color:#5264AE;
-  }
-  
-  /* BOTTOM BARS ================================= */
-  .bar 	{ 
-    position:relative;
-     display:block; 
-     width:41%; 
-     margin: auto;
-    }
-  .bar:before, .bar:after 	{
-    content:'';
-    height:2px; 
-    width:0px;
-    bottom:1px; 
-    position:absolute;
-    background:#5264AE; 
-    transition:0.2s ease all; 
-    -moz-transition:0.2s ease all; 
-    -webkit-transition:0.2s ease all;
-  }
-  .bar:before {
-    left:50%;
-  }
-  .bar:after {
-    right:50%; 
-  }
-  
-  /* active state */
-  input:focus ~ .bar:before, input:focus ~ .bar:after {
-    width:100%; 
-  }
-
-  input:focus {
-    border:none;
-  }
-  
-  /* ANIMATIONS ================ */
-  @-webkit-keyframes inputHighlighter {
-      from { background:#5264AE; }
-    to 	{ width:0; background:transparent; }
-  }
-  @-moz-keyframes inputHighlighter {
-      from { background:#5264AE; }
-    to 	{ width:0; background:transparent; }
-  }
-  @keyframes inputHighlighter {
-      from { background:#5264AE; }
-    to 	{ width:0; background:transparent; }
-  }
 
 button {
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
-    width:100%;
+    width:80%;
     height: 40px;
+    margin: auto;
     border: none;
     cursor: pointer;
     text-decoration: none;
@@ -220,22 +153,7 @@ button {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.btn {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 10px 20px ;
-    margin: 8px;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    border-radius: 2px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
 
-.btn:hover {
-    background-color: gray;
-   
-}
 
 .containerSmall{
  
@@ -401,10 +319,7 @@ header, main, footer {
         position: relative;
         text-align: center;
     }
-    .btn{
-      margin:8px 0px;
-    }
-}
+    
 
 
     
