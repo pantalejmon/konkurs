@@ -70,11 +70,11 @@ body {
 @media screen and (max-width: 750px) { 
     body {
 
-        font-size: 24px;
+        font-size: 20px;
 
     }
     #cmdline {
-        font-size: 24px;
+        font-size: 20px;
         width: 200px;
     }
     
