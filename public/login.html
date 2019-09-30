@@ -16,45 +16,50 @@
     <link rel="manifest" href="/manifest.json">
 
 </head>
+
 <body>
-<!-- <body style="padding: 30px;"> -->
+    <!-- <body style="padding: 30px;"> -->
     <div class="valign-wrapper row">
-        <div class="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4" style="padding:20px;">
-            <form name='form-login' method="POST" action="/apims/login" onsubmit="return validForm()" target="_top">
+        <div class="col card hoverable s10 pull-s1 m6 pull-m3 l6 pull-l3" style="padding:20px; margin-top: 30px;">
+            <div class="valign-wrapper row">
 
+                <form name='form-login' class="col s12 m12" method="POST" action="/apims/login"
+                    onsubmit="return validForm()" target="_top">
+                    <div class="row">
+                        <div class="col s12  m12 l12">
+                            <h3 class="center">Logowanie</h3>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input type="email" id="email" name="email" required>
+                                <label for="email">Wprowadź adres e-mail</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">https</i>
+                                <input type="password" id="pass" name="pass" required>
+                                <label for="pass">Wprowadź hasło</label>
+                            </div>
+                        </div>
 
-                <h3 class="center">Logowanie</h2>
-
-
-
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input type="email" id="email" name="email" required>
-                        <label for="email">Wprowadź adres e-mail</label>
+                        <button class="waves-effect waves-light btn center-align col s12 m8 push-m2 l8 push-l2"
+                            type="submit">Zaloguj</button>
                     </div>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">https</i>
-                        <input type="password" id="pass" name="pass" required>
-                        <label for="pass">Wprowadź hasło</label>
-                    </div>
 
-                    <div id="div" class="row center">
-                        <button class="waves-effect waves-light btn center-align" type="submit">Zaloguj</button>
-                    </div>
+                </form>
 
+            </div>
+            <div class="row">
 
+                <a class=" btn waves-effect col s12 m8 l4 push-m2 push-l1" style="margin: 10px 0px;"
+                    href="/registration.html" title="Rejestracja konkursowa">
+                    Rejestracja</a>
 
-                    <div id="div" class="row center">
-                        <a class="btn waves-effect waves-light btn center-align" style="margin: 10px 0px "
-                            href="/registration.html" title="Rejestracja konkursowa"> Rejestracja</a>
-
-
-                        <a class="btn waves-effect waves-light btn center-align" href=" mailto: mail konkursowy" title="Zapomniałeś hasła? Skontaktuj się z
+                <div class=" col s12 m12 l2"></div>
+                <a class="btn waves-effect col s12 m8 push-m2 l4 push-l1" style="margin: 10px 0px;"
+                    href=" mailto: mail konkursowy" title="Zapomniałeś hasła? Skontaktuj się z
                         administratorami."> Zapomniane hasło </a>
 
-                    </div>
-            </form>
 
+            </div>
         </div>
     </div>
 </body>

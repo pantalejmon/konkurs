@@ -1,5 +1,6 @@
 
 // Uatrakcyjnienie interfejsu
+
 document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems);
@@ -13,6 +14,8 @@ function change(str) {
         t.classList.remove("active");
     }
     document.getElementById(str).classList.add("active");
+    // var instance = M.Sidenav.getInstance(elem);
+    // instance.close();
 }
 
 // Validacja formularza rejestracyjnego
