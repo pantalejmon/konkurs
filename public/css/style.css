@@ -421,3 +421,11 @@ header, main, footer {
     height: 450px;
     /* Could be more or less, depending on screen size */
 }
+
+
+#toast-container {
+  top: auto !important;
+  margin:auto;
+  bottom: 10%;
+   
+}

@@ -16,7 +16,7 @@ function validLogin() {
             if (ans.status == true) {
                 return true;
             } else {
-                alert("Błędne dane logowania")
+                M.toast({ html: 'Błędne dane logowania, spróbuj ponownie', classes: 'rounded red' })
                 return false;
             }
         } catch {
