@@ -65,3 +65,19 @@ body {
 #output .cmd-output div .is-dir {
     color: rgb(0, 82, 255);
 }
+
+
+@media screen and (max-width: 750px) { 
+    body {
+
+        font-size: 24px;
+
+    }
+    #cmdline {
+        font-size: 24px;
+        width: 200px;
+    }
+    
+
+    
+}
