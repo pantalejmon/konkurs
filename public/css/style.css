@@ -7,6 +7,13 @@ header {
     margin-top: 0px;
     box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.1);
 }
+
+
+.page-footer {
+    background-color: gray;
+    height: 60px;
+}
+
 .loginCard {
     background: white;
     padding: 30px;
@@ -175,16 +182,8 @@ footer {
     width: 100%;
     background-color: gray;
     color: white;
-    height: 50px;
+    height: 60px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
-  .footerContent {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    margin: auto;
-    text-align: center;
-    
   }
 
 .linkButton:hover {

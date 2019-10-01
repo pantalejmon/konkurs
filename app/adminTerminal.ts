@@ -1,4 +1,6 @@
 import { User } from "../database/mongo/user";
+import fs from 'fs';
+import { Config } from "./config";
 
 
 
@@ -38,6 +40,9 @@ export class AdminTerminal implements terminal {
             case "user":
                 this.user(inputTable);
                 break;
+            case "valid":
+                this.multiValidation(inputTable[1]);
+                break;
             case "help":
                 this.printHelp("");
                 break;
@@ -46,6 +51,7 @@ export class AdminTerminal implements terminal {
                 break;
         }
     }
+
 
 
     private user(input: Array<string>) {
@@ -87,9 +93,42 @@ export class AdminTerminal implements terminal {
     private validUser(email: string) {
         User.getBase().updateOne({ email: email }, { $set: { valid: true } }, (err, user: any) => {
             if (err) throw err;
-            else console.log("Poprawnie dodano walidacje userowi: " + email);
+            else if (user.n == 0) this.printRed("User o emailu: " + email + " nie występuje w bazie danych" + "\n");
+            else this.printGreen("Poprawnie dodano walidacje userowi: " + email + "\n");
+
+            //console.log(user);
+
         });
     }
+
+    private multiValidation(path?: string) {
+        let data: string = "";
+        if (path) {
+            try {
+                data = fs.readFileSync(path).toString();
+            }
+            catch{
+                this.printRed("Plik o ścieżce: " + path + " nie istnieje \n")
+                return;
+            }
+
+        }
+        else {
+            try {
+                data = fs.readFileSync(Config.getValidationFile()).toString();
+            }
+            catch{
+                this.printRed("brak pliku: " + Config.getValidationFile() + " w folderze projektu \n")
+                return;
+            }
+        }
+        let users: Array<string> = data.split(/\r?\n/);
+        for (let user of users) {
+            this.validUser(user);
+        }
+        //this.printYellow("Terminal konkursowy> ")
+    }
+
     private printPassed() {
         User.getBase().find({ valid: true }, (err, users) => {
             console.log("\nLista użytkowników którzy zaliczyli test: ");

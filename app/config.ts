@@ -12,6 +12,12 @@ export class Config {
     private static rateLimitTime: number = 15/** Only this edit[minutes]*/ * 60 * 1000;
     private static apiMS: string = "/apims";
     private static apiCTF: string = "/apictf";
+    private static validatiomFile = "valid.txt"
+
+
+    public static getValidationFile(): string {
+        return this.validatiomFile;
+    }
 
     public static getMySQLUser(): string {
         return this.mySQLUser;
