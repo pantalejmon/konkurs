@@ -1,4 +1,4 @@
-var cacheName = "pwa";
+var cacheName = "konkurs";
 var filesToCache = [
     "/",
     "/index.html",
