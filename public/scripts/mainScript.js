@@ -94,7 +94,7 @@ window.onload = function () {
 
 function registerSW() {
     if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/scripts/sw.js").then(function () {
+        navigator.serviceWorker.register("/sw.js").then(function () {
             console.log("Service Worker Registered");
         });
     }
