@@ -1,13 +1,12 @@
 {
   "name": "Konkurs CTF",
   "short_name": "Konkurs",
-  "theme_color": "#000000",
-  "background_color": "#000000",
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
   "display": "standalone",
   "Scope": "/",
   "start_url": "/",
-  "icons": [
-    {
+  "icons": [{
       "src": "images/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png"
