@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { Config } from '../../app/config';
+import crypto from 'crypto';
 
 /**
  * Klasa będąca schematem bazodanowym modelu użytkownika 
@@ -33,11 +34,41 @@ class UserSchema extends mongoose.Schema {
                 type: String,
                 required: false
             },
-
+            school: {
+                type: String,
+                required: false
+            },
+            teacher: {
+                type: String,
+                required: false
+            },
+            teacherMail: {
+                type: String,
+                required: false
+            },
+            experience: {
+                type: String,
+                required: false
+            },
+            validationToken: {
+                type: String,
+                required: true,
+                unique: true,
+            },
             valid: {
                 type: Boolean,
                 unique: false,
                 required: true,
+                trim: false
+            },
+            valid2: {
+                type: Boolean,
+                unique: false,
+                trim: false
+            },
+            sendPassed: {
+                type: Boolean,
+                unique: false,
                 trim: false
             },
 
@@ -60,7 +91,17 @@ class UserSchema extends mongoose.Schema {
                 required: true,
                 trim: false
             },
-
+            tempTokenTime: {
+                type: Number,
+                unique: false,
+                required: false,
+                trim: false
+            },
+            tempToken: {
+                type: String,
+                required: false,
+                unique: true
+            },
             answer: [{
                 type: Boolean,
             }]
@@ -92,7 +133,6 @@ export class User {
                 }
                 bcrypt.compare(pass, user.password, (err: Error, result: any) => {
                     if (result === true) {
-                        console.log("Zalogowano użytkownika: " + email);
                         return callback(null, true, user);
                     }
                     else return callback(null, false, null);
@@ -109,18 +149,27 @@ export class User {
      * @param user2 
      * @param callback 
      */
-    static createUser(mail: string, pass: string, teamname: string, user1: string, user2: string, callback?: any) {
+    static createUser(mail: string, pass: string, teamname: string, user1: string, user2: string, school: string, teacher: string, teacherMail: string, experience: string, callback?: any) {
         let userData = {
             email: mail,
             password: pass,
             teamname: teamname,
             user1: user1,
             user2: user2,
+            school: school,
+            teacher: teacher,
+            teacherMail: teacherMail,
             passed: false,
+            validationToken: crypto.randomBytes(30).toString('hex'),
             answer: [] as any,
             valid: false,
+            valid2: false,
+            sendPassed: false,
             expires: 0,
-            level: 1
+            level: 1,
+            tempToken: "0",
+            tempTokenTime: 0,
+            experience: experience
         }
         let i: number = 0;
         while (i < 50) {
@@ -133,14 +182,13 @@ export class User {
                 callback(err);
             }
             userData.password = hash;
-            console.log("policzono hasha: ", hash)
             User.usr.create(userData, function (error: any, user: any) {
                 if (error) {
                     console.log(error);
                     callback(error);
                 }
                 else {
-                    console.log("Dodano usera o mailu: ", user.email);
+                    console.log("[REGISTRATION] Dodano usera o mailu: ", user.email);
                     callback(null, user);
                 }
             });
@@ -153,6 +201,7 @@ export class User {
     static removeUser(mail: string) {
         User.usr.deleteOne({ email: mail }, (error) => {
             if (error) console.log("failed to delete user: ", mail, "\nError:", error);
+            else console.log("[ADMIN] Usunięto user o emailu: " + mail);
         });
     }
 
@@ -163,7 +212,6 @@ export class User {
      * @param callback 
      */
     static changePassword(mail: string, newPass: string, callback?: any) {
-
         bcrypt.hash(newPass, 10, (err, hash) => {
             if (err) {
                 console.log(err);
@@ -180,7 +228,6 @@ export class User {
             })
         })
 
-
     }
 
     /**
@@ -195,6 +242,16 @@ export class User {
                 callback(err, null);
             }
             else callback(err, user.passed);
+        })
+    }
+
+    static getSendPassed(mail: string, callback: any) {
+        User.usr.findOne({ email: mail }, (err, user: any) => {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            }
+            else callback(err, user.sendPassed);
         })
     }
 
@@ -214,6 +271,20 @@ export class User {
                 console.log(user);
                 console.log("Zmieniam userowi" + mail + "token na " + passed);
                 callback(err, passed);
+            }
+        })
+    }
+
+    static setSendPassed(mail: string, sendPassed: boolean, callback: any) {
+        User.usr.updateOne({ email: mail }, { $set: { sendPassed: sendPassed } }, (err, user: any) => {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            }
+            else {
+                console.log(user);
+                console.log("Zmieniam userowi" + mail + " flage 2 etapu  na " + sendPassed);
+                callback(err, sendPassed);
             }
         })
     }
@@ -314,7 +385,7 @@ export class User {
                 console.log(err);
                 callback(err, null);
             }
-            else callback(err, user._id.toString());
+            else callback(err, user._id.toString(), user.teamname);
         })
     }
 
@@ -326,7 +397,23 @@ export class User {
     static checkMailExist(mail: string, callback: any) {
         User.usr.findOne({ email: mail }, (err, user: any) => {
             if (err) throw err;
-            else if (user) callback(err, true)
+            else if (user && user.valid == true) callback(err, true)
+            else callback(err, false);
+        })
+    }
+
+    static checkMailExistRegistration(mail: string, callback: any) {
+        User.usr.findOne({ email: mail }, (err, user: any) => {
+            if (err) throw err;
+            else if (user && user.valid == true) {
+                callback(err, true)
+            } else if (user && user.valid == false) {
+                User.usr.deleteOne({ email: mail }, (error) => {
+                    if (error) console.log("failed to delete user: ", mail, "\nError:", error);
+                    else console.log("[ADMIN] Usunięto user o emailu: " + mail);
+                    callback(err, false)
+                });
+            }
             else callback(err, false);
         })
     }

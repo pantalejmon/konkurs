@@ -9,10 +9,24 @@ header {
 }
 
 
-.page-footer {
+/* .page-footer {
     background-color: gray;
     height: 60px;
+} */
+
+.page-footer {
+    background-color: gray;
 }
+
+body {
+    display: flex;
+    min-height: 90vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
 
 .loginCard {
     background: white;
@@ -175,16 +189,6 @@ html, body {
     padding: 0;
     margin: 0;
 }
-footer {
-
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background-color: gray;
-    color: white;
-    height: 60px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
 
 .linkButton:hover {
     opacity: 0.8;
@@ -209,17 +213,22 @@ footer {
 
 /* Change styles for span and cancel button on extra small screens */
 
-header, main, footer {
+header, main, footer, .stopka {
     padding-left: 300px;
   }
 
-  @media only screen and (max-width : 992px) {
-    header, main, footer{
+@media only screen and (max-width : 992px) {
+    header, main, footer, .stopka{
       padding-left: 0;
     }
   }
   html, body { height: 100%; }
+
+
+
+
 @media screen and (max-width: 750px) { 
+    
    
     .loginCard {
         background: white;
@@ -291,13 +300,15 @@ header, main, footer {
         position: relative;
         text-align: center;
     }
-    
-
-
+    .bottomContainer{
+        display: none;
+    }
 }
 
+
+
 ::selection {
-    background: #ff5e99;
+    background: #bbb;
 }
 
 .cookieConsentContainer {
@@ -430,5 +441,15 @@ header, main, footer {
 }
 
 
+.bottomContainer{
 
+    display: block;
+}
+
+#bottomDiv{
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    display: block;
+}
 /* label color */

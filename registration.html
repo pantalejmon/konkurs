@@ -1,0 +1,176 @@
+<!doctype html>
+
+<html lang="pl">
+
+<head>
+    <meta charset="utf-8">
+    <title>Aplikacja konkursowa</title>
+    <script type="text/javascript" src="scripts/materialize.min.js"></script>
+    <script src="scripts/registerScript.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000" />
+    <link rel="manifest" href="/manifest.json">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-150847971-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-150847971-1');
+    </script>
+
+</head>
+
+<body>
+    <!-- OKNO ŁADOWANIA -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div id="loader"></div>
+        </div>
+    </div>
+
+    <!-- KARTA REJESTRACJI -->
+    <div class="valign-wrapper row">
+        <div class="col card hoverable s10 pull-s1 m8 pull-m2 l6 pull-l3" style="padding:20px; margin-top: 30px;">
+            <form name='form-login' method="POST" target="_top" onsubmit="return validForm()" action="/apims/register">
+                <h4 align="center">Rejestracja</h4>
+                <p align="justify">Witaj na stronie rejestracyjnej konkursu: <strong>Capture The Flag:
+                        "153+1"</strong>.</p>
+                <p align="justify">Rejestracji zespołu dokonuje opiekun (nauczyciel).
+                    <p align="justify">Najpierw należy podać mail lidera zespołu (jednego z uczniów).
+                        Z jego wykorzystaniem zespół będzie logować się do części konkursowej, a także za jego pomocą
+                        odbywać się będzie ewentualny reset zapomnianego hasłą.
+                        Na dole formularza należy podać mail opiekuna zespołu - z wykorzystaniem tego maila odbywa się
+                        walidacja zespołu.</p>
+                    <p align="justify">Dostęp do części testowej konkursu zostanie przyznany wszystkim zespołom
+                        jednocześnie, tj. w dniu 4.11.2019 r.</p>
+
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">mail</i>
+                        <input type="email" id="email" name="email" class="validate" required>
+                        <label for="email">Wprowadź adres e-mail jednego z uczniów (lidera zespołu)</label>
+                        <span class="helper-text" data-error="Błąd" data-success="Poprawny adress email"></span>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">group</i>
+                        <input type="text" class="validate" id="teamname" pattern="?=.{3,}" name="teamname" required>
+                        <label for="teamname">Wprowadź nazwę zespołu</label>
+                        <span class="helper-text" data-error="Nazwa drużyny powinna być dłuższa niż 2 znaki"
+                            data-success="Poprawna nazwa zespołu"></span>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">https</i>
+                        <input type="password" class="validate" id="pass" pattern="^(?=.{8,}$).*" class="validate"
+                            name="pass" required>
+                        <label for="pass">Wprowadź hasło logowania</label>
+                        <span class="helper-text" data-error="Hasło jest zbyt proste, musi zawierać conajmniej 8 znaków"
+                            data-success="Hasło jest wystarczające"></span>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">replay</i>
+                        <input type="password" id="pass2" oninput="checkPass()" class="validate" required>
+                        <label for="pass2">Powtórz hasło logowania</label>
+                        <span class="helper-text" id="help" for="pass2" data-error="Hasła nie są identyczne"
+                            data-success="Hasła są identyczne"></span>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">face</i>
+                        <input type="text" name="user1" id="user1" required>
+                        <label for="user1">Imię i nazwisko zawodnika 1</label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">face</i>
+                        <input id="user2" type="text" name="user2" required>
+                        <label for="user2">Imię i nazwisko zawodnika 2</label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">domain</i>
+                        <input id="school" type="text" name="school" required>
+                        <label for="school">Nazwa szkoły</label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">school</i>
+                        <input id="teacher" type="text" name="teacher" required>
+                        <label for="teacher">Imię i nazwisko nauczyciela</label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">mail</i>
+                        <input id="teacherMail" type="email" name="teacherMail" required>
+                        <label for="teacherMail">Adres email nauczyciela</label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <p>Czy członkowie zespołu brali kiedykolwiek udział w zawodach Capture The Flag?</p>
+                        <p>
+                            <label>      
+                                <input class="with-gap" value="none" name="experience" type="radio" checked />
+                                <span>Nie, nie brali udziału.</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input class="with-gap" value="just_one" name="experience" type="radio" />
+                                <span>Tak, jedna osoba.</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input class="with-gap" value="both" name="experience" type="radio" />
+                                <span>Tak, dwie osoby.</span>
+                            </label>
+                        </p>
+                    </div>
+
+                    <div class="input-field col s12" style="margin-bottom: 30px;">
+                        <label>
+                            <input type="checkbox" class="filled-in" required />
+                            <span>Oświadczam iż zapoznałem się regulaminem konkursu dostępnym <a
+                                    href="docs/regulamin_konkursu.pdf" target="_top">tutaj</a>.</span>
+                        </label>
+                        <span class="helper-text"></span><br>
+                    </div>
+
+                    <div class="divider"></div>
+                    <div class="input-field col s12" style="text-align: center">
+                        <div class="g-recaptcha center" data-size="compact" style="display:inline-block;"
+                            data-sitekey="6Lc-IL0UAAAAAFI4UnneN19A4PvVwTEUFqkOMvA5"></div>
+                    </div>
+
+                    <div class="divider"></div>
+                    <div class="input-field col s12" style="margin-top: 50px;">
+                        <button class="waves-effect waves-light btn center-align col s12 m8 push-m2 l8 push-l2"
+                            type="submit">Zarejestruj</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+    <div class="valign-wrapper row ">
+        <div class="col card hoverable s10 pull-s1 m8 pull-m2 l6 pull-l3" style="padding:20px;">
+            <a class="btn waves-effect col s12 m12  l12" style="margin: 20px 0px;" href="/login.html"
+                title="Powrót do strony logowania"> Logowanie
+            </a>
+            <div class=" col s12 m12 l12"></div>
+
+            <a class="btn waves-effect col s12  col m12  l12" style="margin: 20px 0px;"
+                href=" mailto: kontakt@153plus1.pl" title="Potrzebujesz pomocy? Skontaktuj się z
+            administratorami."> Pomoc
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -2,7 +2,7 @@ function validLogin() {
     let email = document.getElementById("email");
     let pass = document.getElementById("pass");
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://" +
+    xhr.open("POST", "https://" +
         window.location.host + "/apims/logincheck", null);
     //wysyłamy połączenie
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -22,5 +22,18 @@ function validLogin() {
         } catch {
             return false;
         }
+    }
+}
+function pass() {
+    showCard("passchange")
+}
+
+
+function showCard(cardName) {
+    let card = document.getElementById(cardName);
+    if (card.style.display === "none") {
+        card.style.display = "block";
+    } else {
+        card.style.display = "none";
     }
 }

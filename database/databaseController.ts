@@ -17,7 +17,7 @@ export class DataBase {
         this.connection = mongoose.connection;
         this.connection.on('error', console.error.bind(console, 'connection error:'));
         this.connection.once('open', () => {
-            console.log("Połaczono z bazą");
+            console.log("[INIT] Połaczono z bazą MongoDB");
             //this.usr.createUser("test1", "test2", "test3", () => { });
         });
         this.mysql = new MySQLController();

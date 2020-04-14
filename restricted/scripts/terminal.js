@@ -105,10 +105,7 @@ function setCaretPosition(ctrl, pos) {
  */
 Terminal.Output = function (element) {
 
-    // OutputElemen
     var outputElement = document.getElementById(element);
-
-    // White
     this.write = function (content, input) {
         if (!input) input = "";
         var fromContent = outputElement.innerHTML;
@@ -134,17 +131,8 @@ Terminal.Output = function (element) {
     };
 };
 
-/**
- * Terminal Filesystem Pointer
-
-/**
- * Command Ls
- */
-
-
 Command.Answer = {
     getFsCallback: function (input, output) {
-
         // Check Params
         if (input[1] == null) {
             return output.write('Brak podanej odpowiedzi, jako argument podaj a,b,c lub d.', input.join(" "));
@@ -157,7 +145,7 @@ Command.Answer = {
         }
 
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://" +
+        xhr.open("POST", "https://" +
             window.location.host + "/apims/answer", null);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.addEventListener('load', function () {
@@ -165,12 +153,15 @@ Command.Answer = {
                 try {
                     let quest = JSON.parse(this.responseText);
                     if (quest.wynik) {
+
                         output.write("Zakończyłeś test z wynikiem: " + (quest.wynik * 2) + "%", input.join(" "));
 
-                        if (quest.link[0] != 'h') {
+                        if (quest.link[0] == 'h') {
                             output.simpleWrite("Gratulacje!");
                             output.simpleWrite("Personalny link rejestracyjny do części zadaniowej:")
                             output.simpleWrite("<a style='color:yellow;' href='" + quest.link + "'>" + quest.link + "</a>")
+                        } else if (quest.hours) {
+                            output.write("Pozostały czas do rozpoczęcia testu to: " + quest.hours + "h", input.join(" "));
                         } else {
                             output.simpleWrite("Spróbuj ponownie");
                         }
@@ -198,7 +189,6 @@ Command.Answer = {
         xhr.send(JSON.stringify({
             answer: answers[input[1]]
         }));
-
     }
 };
 
@@ -230,7 +220,7 @@ Command.Man = {
     getFsCallback: function (input, output) {
         let string = "";
         string += '<pre>';
-        string += '<div><h4>Intstukcja obsługi aplikacji konkurs:</h4></div>';
+        string += '<div><h4>Instrukcja obsługi aplikacji konkurs:</h4></div>';
         string += '<div>W celu rozpoczęcia wykonywania testu należy wpisać: <strong>start</strong>.</div>';
         string += '<div>Po wykonaniu tej komendy zostanie wyświetlone pierwsze pytanie, a zegar rozpocznie odliczanie. </div>';
         string += '<div>Test składa się z <strong>50</strong> pytań zamkniętych, w których poprawna może być tylko <strong>jedna</strong> odpowiedź.</div>';
@@ -297,20 +287,14 @@ Command.FullScreen = {
 Command.Logout = {
     getFsCallback: function (input, output) {
         let xhr = new XMLHttpRequest();
-
-        //typ połączenia, url, czy połączenie asynchroniczne
-        xhr.open("GET", "http://" +
+        xhr.open("GET", "https://" +
             window.location.host + "/logout", null);
-
-        //wysyłamy połączenie
         xhr.send();
-        window.location.replace("http://" +
+        window.location.replace("https://" +
             window.location.host + "/index");
     }
 };
-/**
- * Command Not Found
- */
+
 Command.Notfound = {
     getFsCallback: function (input, output) {
         return output.write('<div>Nieznana komenda, w celu sprawdzenia dostepnych komend wpisz help</div>', input.join(" "));
@@ -322,11 +306,10 @@ Command.LinuxCommand = {
     }
 };
 
-
 Command.Time = {
     getFsCallback: function (input, output) {
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://" +
+        xhr.open("GET", "https://" +
             window.location.host + "/apims/time", null);
         xhr.addEventListener('load', function () {
             if (this.status === 200) {
@@ -339,8 +322,6 @@ Command.Time = {
                 }
             }
         })
-
-        //wysyłamy połączenie
         xhr.send();
     }
 };
@@ -348,7 +329,7 @@ Command.Time = {
 Command.Reset = {
     getFsCallback: function (input, output) {
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://" +
+        xhr.open("GET", "https://" +
             window.location.host + "/apims/reset", null);
         xhr.addEventListener('load', function () {
             if (this.status === 200) {
@@ -360,18 +341,15 @@ Command.Reset = {
                 }
             }
         })
-
-        //wysyłamy połączenie
         xhr.send();
     }
 
 };
 
-
 Command.Start = {
     getFsCallback: function (input, output) {
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://" +
+        xhr.open("GET", "https://" +
             window.location.host + "/apims/start", null);
         xhr.addEventListener('load', function () {
             if (this.status === 200) {
@@ -379,11 +357,24 @@ Command.Start = {
                 try {
                     let quest = JSON.parse(this.responseText);
                     if (quest.wynik) {
-                        output.write("Zakończyłeś test z wynikiem: " + (quest.wynik / 50) * 100 + "%", input.join(" "));
-                        output.simpleWrite("Gratulacje!");
-                        output.simpleWrite("Personalny link rejestracyjny do części zadaniowej:")
-                        output.simpleWrite("<a style='color:yellow;' href='" + quest.link + "'>" + quest.link + "</a>")
+                        output.write("Zakończyłeś test z wynikiem: " + (quest.wynik * 2) + "%", input.join(" "));
 
+                        if (quest.link[0] == 'h') {
+                            output.simpleWrite("Gratulacje!");
+                            output.simpleWrite("Uzyskaliście pozytywny wynik z testu (ponad 70%).")
+                            output.simpleWrite("Czas na przejście do części zadaniowej i sprawdzenie Waszych umiejętności w praktyce!")
+                            output.simpleWrite("Na maila podanego przy rejestracji (mail uczestnika, nie opiekuna) wysłana została wiadomość zawierająca dane dostępowe. ")
+                            output.simpleWrite("Link to częsci zadaniowej: ")
+                            output.simpleWrite("<a style='color:yellow;' href='" + quest.link + "'>" + quest.link + "</a>")
+                            output.simpleWrite("W przypadku problemów skorzystaj z opcji zapomniane hasło na platformie z linka lub skontaktuj się z organizatorami")
+                            output.simpleWrite("Powodzenia !")
+                        } else if (quest.hours) {
+                            output.write("Pozostały czas do rozpoczęcia testu to: " + quest.hours + "h", input.join(" "));
+                        } else {
+                            output.simpleWrite("Spróbuj ponownie");
+                        }
+                    } else if (quest.hours) {
+                        output.write("Pozostały czas do rozpoczęcia testu to: " + quest.hours + "h", input.join(" "));
                     } else {
                         output.write("Pytanie nr: " + quest.level, input);
                         output.simpleWrite(quest.question, input);
@@ -399,16 +390,12 @@ Command.Start = {
                 } catch (e) {
                     location.reload();
                 }
-
             }
         })
-        //wysyłamy połączenie
         xhr.send();
     }
 };
-/**
- * Terminal CommandFactory
- */
+
 Command.Factory = {
     commandMap: {
         'answer': Command.Answer,
@@ -440,19 +427,15 @@ Command.Factory = {
     }
 };
 
-/**
- * Window Load
- */
 window.onload = function () {
     document.getElementById("prompt").innerHTML = promptLine;
     new Terminal.Events('cmdline', 'output');
     checkName();
-
 };
 
 function checkName() {
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://" +
+    xhr.open("GET", "https://" +
         window.location.host + "/apims/username", null);
     xhr.addEventListener('load', function () {
         if (this.status === 200) {
@@ -461,7 +444,5 @@ function checkName() {
             document.getElementById("prompt").innerHTML = promptLine;
         }
     })
-
-    //wysyłamy połączenie
     xhr.send();
 }

@@ -1,19 +1,48 @@
 export class Config {
-    private static mySQLUser: string = "admin";
-    private static mySQLPass: string = "admin";
-    private static mySQLSchema: string = "konkurs";
-    private static mySQLAddress: string = "localhost";
-    private static mySQLTablename: string = "test_passed";
+    private static mySQLUser: string = "nodejs";
+    private static mySQLPass: string = "uYae1rohaseig5oG";
+    private static mySQLSchema: string = "ctfd";
+    private static mySQLAddress: string = "127.0.0.1";
+    private static mySQLTablename: string = "users";
     private static mongoAddress: string = "mongodb://localhost/konkurs";
+    private static domain: string = "https://153plus1.pl"
 
     private static testDuration: number = 720/** Only this edit[minutes]*/ * 60 * 1000;
     private static testSource: string = "./pytania.json";
     private static rateLimitMax: number = 300
     private static rateLimitTime: number = 15/** Only this edit[minutes]*/ * 60 * 1000;
     private static apiMS: string = "/apims";
-    private static apiCTF: string = "/apictf";
-    private static validatiomFile = "valid.txt"
+    private static apiCTF: string = "/ctf";
+    private static validatiomFile: string = "valid.txt"
+    private static mailUser: string = "noreply@153plus1.pl";
+    private static mailPass: string = "doo7Rasa1";
+    private static mailHost: string = "153plus1.pl";
+    private static mailPort: number = 587;
+    private static startTime: number = new Date("2019-11-03T08:00:00+0000").getTime();
 
+    public static getStartTime(): number {
+        return this.startTime;
+    }
+
+    public static getMailPort(): number {
+        return this.mailPort;
+    }
+
+    public static getDomain(): string {
+        return this.domain;
+    }
+
+    public static getMailUser(): string {
+        return this.mailUser;
+    }
+
+    public static getMailPass(): string {
+        return this.mailPass;
+    }
+
+    public static getMailHost(): string {
+        return this.mailHost;
+    }
 
     public static getValidationFile(): string {
         return this.validatiomFile;

@@ -1,8 +1,8 @@
 // Uatrakcyjnienie interfejsu
-document.addEventListener('DOMContentLoaded', function () {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems);
-});
+// document.addEventListener('DOMContentLoaded', function () {
+//     var elems = document.querySelectorAll('.sidenav');
+//     var instances = M.Sidenav.init(elems);
+// });
 
 function change(str) {
     console.log("Zmiana na " + str);
@@ -19,7 +19,7 @@ function change(str) {
 /*****************Cookies**************************/
 let purecookieTitle = "Uwaga ciasteczka!"; // Title
 let purecookieDesc = "Biorąc udział w konkursie zgadzasz się na używanie plików cookies"; // Description
-let purecookieLink = '<a href="http://www.dziennikustaw.gov.pl/DU/2012/1445" target="_blank">Więcej informacji</a>'; // Cookiepolicy link
+let purecookieLink = '<a href="/docs/rodo_cookies.pdf" target="_blank">Więcej informacji</a>'; // Cookiepolicy link
 let purecookieButton = "Zrozumiałem"; // Button text
 
 function pureFadeIn(elem, display) {
@@ -87,9 +87,10 @@ function purecookieDismiss() {
 }
 
 window.onload = function () {
-    cookieConsent();
     registerSW();
-
+    cookieConsent();
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
 };
 
 function registerSW() {

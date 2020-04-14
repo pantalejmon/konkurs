@@ -36,8 +36,8 @@ export class TestController {
     constructor() {
         const test: any = fs.readFileSync(Config.getTestSource());
         this.bazaPytan = JSON.parse(test.toString().trim());
-        console.log("Wczytano baze pytan o numerze: ", this.bazaPytan.wersja_bazy_pytan);
-        console.log("Data wydania bazy pytan: ", this.bazaPytan.data_aktualizacji);
+        console.log("[INIT] Wczytano baze pytan o numerze: ", this.bazaPytan.wersja_bazy_pytan);
+        console.log("[INIT] Data wydania bazy pytan: ", this.bazaPytan.data_aktualizacji);
     }
 
     /**

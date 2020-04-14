@@ -1,5 +1,5 @@
 ::selection {
-    background: #ff5e99;
+    background: #070;
 }
 
 html,
@@ -67,3 +67,9 @@ body {
 }
 
 
+@media only screen and (max-width : 400px) {
+    #cmdline{
+        width: 80px;
+    }
+  }
+  
